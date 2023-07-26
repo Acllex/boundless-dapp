@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import NftList from "../components/nft/list/NftList.vue";
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <NftList />
   </main>
 </template>
