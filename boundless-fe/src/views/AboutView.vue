@@ -1,59 +1,7 @@
-<template>
-  <el-form ref="form" :model="sizeForm" label-width="auto" label-position="top">
-    <el-form-item label="Activity name">
-      <el-input v-model="sizeForm.name" />
-    </el-form-item>
-    <el-form-item label="Activity zone">
-      <el-select v-model="sizeForm.region" placeholder="please select your zone">
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select>
-    </el-form-item>
-    <el-form-item label="Activity time">
-      <el-col :span="11">
-        <el-date-picker
-          v-model="sizeForm.date1"
-          type="date"
-          label="Pick a date"
-          placeholder="Pick a date"
-          style="width: 100%"
-        />
-      </el-col>
-      <el-col class="text-center" :span="1" style="margin: 0 0.5rem">-</el-col>
-      <el-col :span="11">
-        <el-time-picker
-          v-model="sizeForm.date2"
-          label="Pick a time"
-          placeholder="Pick a time"
-          style="width: 100%"
-        />
-      </el-col>
-    </el-form-item>
-    <el-form-item label="Activity type">
-      <el-checkbox-group v-model="sizeForm.type">
-        <el-checkbox-button label="Online activities" name="type" />
-        <el-checkbox-button label="Promotion activities" name="type" />
-      </el-checkbox-group>
-    </el-form-item>
-    <el-form-item label="Resources">
-      <el-radio-group v-model="sizeForm.resource">
-        <el-radio border label="Sponsor" />
-        <el-radio border label="Venue" />
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">Create</el-button>
-      <el-button>Cancel</el-button>
-    </el-form-item>
-  </el-form>
-</template>
-
 <script lang="ts" setup>
+import { UploadFilled } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
-
-const size = ref('default')
-const labelPosition = ref('right')
-
+const isSwitch = ref(false)
 const sizeForm = reactive({
   name: '',
   region: '',
@@ -69,6 +17,53 @@ function onSubmit() {
   console.log('submit!')
 }
 </script>
+<template>
+  <main class="flex justify-between max-w-7xl bg-white mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div>
+      <div>
+        <span>是否已经创建元数据？</span>
+        <el-switch v-model="isSwitch" />
+      </div>
+    </div>
+    <el-form class="w-7/12" ref="form" :model="sizeForm" label-width="auto" label-position="top">
+      <el-form-item label="名称">
+        <el-input v-model="sizeForm.name" placeholder="我的NFT" />
+      </el-form-item>
+      <el-form-item label="Activity zone">
+        <el-input
+          :autosize="{ minRows: 3, maxRows: 4 }"
+          type="textarea"
+          placeholder="Please input"
+        />
+      </el-form-item>
+      <el-form-item label="Activity time">
+        <el-upload class="w-full" drag action="" multiple>
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+          <!-- <template #tip>
+            <div class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+          </template> -->
+        </el-upload>
+      </el-form-item>
+      <div class="w-full flex justify-between">
+        <el-form-item label="Activity type">
+          <el-input v-model="sizeForm.name" placeholder="我的NFT" />
+        </el-form-item>
+        <el-form-item label="Activity type">
+          <el-input v-model="sizeForm.name" placeholder="我的NFT" />
+        </el-form-item>
+        <el-form-item label="Resources">
+          <el-input v-model="sizeForm.name" placeholder="我的NFT" />
+        </el-form-item>
+      </div>
+
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button>Cancel</el-button>
+      </el-form-item>
+    </el-form>
+  </main>
+</template>
 
 <style>
 .el-radio-group {
