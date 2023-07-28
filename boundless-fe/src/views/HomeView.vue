@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import NftList from '../components/nft/list/NftList.vue'
-import { useCounterStore } from '@/stores/counter'
-const store = useCounterStore()
-const { web3Api } = storeToRefs(store)
 </script>
 
 <template>

@@ -1,20 +1,6 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useCounterStore } from '@/stores/counter'
-const store = useCounterStore()
-const { web3Api } = storeToRefs(store)
-const onSigner = async () => {
-  if (!web3Api.value.provider) return
-  const signer = await web3Api.value.provider.getSigner()
-  if (signer) {
-    console.log('Signer successfully detected!')
-    const accounts = await signer.getAddress()
-    console.log(accounts)
-  }
-}
-onMounted(onSigner)
+import { ref, watch } from 'vue'
 
 const activeIndex = ref('/')
 const router = useRouter()
