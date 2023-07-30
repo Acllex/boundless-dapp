@@ -375,4 +375,4 @@ export const NETWORK_ABI = [
     type: 'function'
   }
 ]
-export const NETWORK_ADDRESS = '0xeb54DE184bd61A23e7575Ad7072988312E0dA4a4'
+export const NETWORK_ADDRESS = '0x7B4cFd062Fc0b96136c87948a2ff1F2BF0624572'

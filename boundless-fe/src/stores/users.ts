@@ -1,10 +1,74 @@
-import { ref, onBeforeMount } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
+const { provider, ethereum } = useWeb3Api()
+const NETWORKS: { [k: number]: string } = {
+  1: '以太坊主网',
+  3: 'Ropsten测试网',
+  4: 'Rinkeby测试网',
+  5: 'Goerli测试网',
+  42: 'Kovan测试网',
+  56: 'BSC主网',
+  97: 'BSC测试网',
+  128: 'HECO主网',
+  256: 'HECO测试网',
+  137: 'Polygon主网',
+  80001: 'Polygon测试网',
+  250: 'Fantom主网',
+  4002: 'Fantom测试网',
+  42161: 'Arbitrum主网',
+  421611: 'Arbitrum测试网',
+  1666600000: 'Harmony主网',
+  1666700000: 'Harmony测试网',
+  43114: 'Avalanche主网',
+  43113: 'Avalanche测试网',
+  100: 'xDai主网',
+  77: 'Sokol测试网',
+  1337: 'Localhost 8545',
+  59144: 'Linea Mainnet',
+  11155111: 'Sepolia测试网络',
+  59140: 'Linea Testnet'
+}
 export const useUsersStore = defineStore('users', () => {
-  const web3Api = ref()
-  onBeforeMount(() => {
-    web3Api.value = useWeb3Api()
+  const userInfo = ref({
+    accounts: '',
+    isLoading: false
   })
-  return { web3Api }
+  const networkInfo = ref({
+    name: '',
+    isLoading: false
+  })
+
+  // 获取用户信息
+  async function getUserInfo() {
+    if (!provider) return
+    userInfo.value = { isLoading: true, accounts: '' }
+    const signer = await provider.getSigner()
+    const accounts = await signer.getAddress()
+    userInfo.value = { accounts, isLoading: false }
+  }
+
+  // 监听账户变化
+  onMounted(() => {
+    if (!ethereum) return
+    userInfo.value = { isLoading: true, accounts: '' }
+    ethereum.on('accountsChanged', (accounts: string[]) => {
+      userInfo.value = { isLoading: false, accounts: accounts[0] }
+    })
+  })
+  // 监听网络变化
+  onMounted(async () => {
+    if (!ethereum || !provider) {
+      networkInfo.value = { isLoading: false, name: '无法获取网络' }
+      return
+    }
+    networkInfo.value = { isLoading: true, name: '' }
+    const { chainId } = await provider.getNetwork()
+    networkInfo.value = { isLoading: false, name: NETWORKS[Number(chainId)] }
+    ethereum.on('chainChanged', (chainId: string) => {
+      networkInfo.value = { isLoading: false, name: NETWORKS[Number(chainId)] }
+    })
+  })
+
+  return { userInfo, getUserInfo, networkInfo }
 })
