@@ -19,8 +19,8 @@ contract NftMarket is ERC721URIStorage {
     }
     event NftItemCreated(uint tokenId, uint price, address creator, bool isListed);
     constructor() ERC721("NftMarket", "NFTM") {}
-
-    function createItem(string memory tokenURI, uint price) public payable returns (uint) {
+    // 铸造NFT
+    function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
         require(!tokenURIExists(tokenURI), "This token URI already exists");
 
         _tokenIds.increment();
@@ -38,6 +38,15 @@ contract NftMarket is ERC721URIStorage {
         _nftItems[tokenId] = NftItem(tokenId, price, msg.sender, true);
         emit NftItemCreated(tokenId, price, msg.sender, true);
     }
+    // 获取指定的NFT
+    function getNftItem(uint tokenId) public view returns (NftItem memory) {
+        return _nftItems[tokenId];
+    }
+    // 获取当前用户nft数量
+    function listedItemsCount() public view returns (uint) {
+        return _listedItems.current();
+    }
+    // 判断tokenURI是否存在
     function tokenURIExists(string memory tokenURI) public view returns (bool) {
         return _usedTokenURIs[tokenURI]==true;
     }
