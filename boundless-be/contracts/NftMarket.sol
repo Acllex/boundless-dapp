@@ -6,23 +6,26 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NftMarket is ERC721URIStorage {
     using Counters for Counters.Counter;
-    Counters.Counter private _listedItems;
-    Counters.Counter private _tokenIds;
-    mapping(string => bool) private _usedTokenURIs;
-    mapping(uint => NftItem) private _nftItems;
-
     struct NftItem {
         uint tokenId;
         uint price;
         address creator;
         bool isListed;
     }
+    Counters.Counter private _listedItems;
+    Counters.Counter private _tokenIds;
+    mapping(string => bool) private _usedTokenURIs;
+    mapping(uint => NftItem) private _nftItems;
+    // 挂牌价
+    uint public listingPrice = 0.025 ether;
+    
     event NftItemCreated(uint tokenId, uint price, address creator, bool isListed);
     constructor() ERC721("NftMarket", "NFTM") {}
     // 铸造NFT
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
         require(!tokenURIExists(tokenURI), "This token URI already exists");
-
+        // 价格必须等于挂牌价
+        require(msg.value == listingPrice, "Price must be equal to listing price");
         _tokenIds.increment();
         _listedItems.increment();
 
