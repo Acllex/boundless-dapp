@@ -14,8 +14,12 @@ contract NftMarket is ERC721URIStorage {
     }
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
+    // 保存所有的tokenIds
+    uint256[] private _allNfts;
+
     mapping(string => bool) private _usedTokenURIs;
     mapping(uint => NftItem) private _nftItems;
+    mapping(uint => uint) private _nftItemIndex;
     // 挂牌价
     uint public listingPrice = 0.025 ether;
     
@@ -36,10 +40,24 @@ contract NftMarket is ERC721URIStorage {
         _usedTokenURIs[tokenURI] = true;
         return newTokenId;
     }
+    // nft信息
     function _createNftItem(uint tokenId, uint price) private {
         require(price > 0, "Price must be greater than 0");
         _nftItems[tokenId] = NftItem(tokenId, price, msg.sender, true);
         emit NftItemCreated(tokenId, price, msg.sender, true);
+    }
+    // 买入NFT
+    function buyNft(uint tokenId) public payable {
+        uint price = _nftItems[tokenId].price;
+        address owner = ERC721.ownerOf(tokenId);
+        require(msg.sender != owner, "You already the owner of this NFT");
+        require(msg.value == price, "Price must be equal to the NFT price");
+        _nftItems[tokenId].isListed = false;
+        // nft数量减一
+        _listedItems.decrement();
+        // 转移NFT
+        _transfer(owner, msg.sender, tokenId);
+        payable(owner).transfer(msg.value);
     }
     // 获取指定的NFT
     function getNftItem(uint tokenId) public view returns (NftItem memory) {
