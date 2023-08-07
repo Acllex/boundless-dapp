@@ -57,13 +57,31 @@ contract('NftMarket', (accounts) => {
             const nftItem = await nftmarket.getNftItem(1);
             assert.equal(nftItem.isListed, false, 'Nft还在list中');
         })
-        it('获取当前用户Nft数量', async () => {
+        it('获取当前市场Nft数量', async () => {
             const count = await nftmarket.listedItemsCount();
             assert.equal(count.toNumber(), 0, 'Nft数量不正确');
         })
-        it('Nft是否转移给了买家', async () => {
+        it('Nft应变更了所有者', async () => {
             const owner = await nftmarket.ownerOf(1);
-            assert.equal(owner, accounts[1], 'Nft没有转移给买家');
+            assert.equal(owner, accounts[1], 'Nft没有变更了所有者');
+        })
+    })
+    describe("Token transfers", () => {
+        before(async () => {
+            await nftmarket.mintToken('https://www.baidu1.com', _nftPrice, {
+                from: accounts[0],
+                value: _listingPrice
+            })
+        })
+        it("应有两个Nfts", async () => {
+            const totalSupply = await nftmarket.totalSupply();
+            assert.equal(totalSupply.toNumber(), 2, 'Nft数量不正确');
+        })
+        it("可以通过index检索Nft", async () => {
+            const nft1 = await nftmarket.tokenByIndex(0);
+            const nft2 = await nftmarket.tokenByIndex(1);
+            assert.equal(nft1.toNumber(), 1, 'Nft1不正确');
+            assert.equal(nft2.toNumber(), 2, 'Nft2不正确');
         })
     })
 })

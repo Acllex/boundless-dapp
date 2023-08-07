@@ -46,6 +46,14 @@ contract NftMarket is ERC721URIStorage {
         _nftItems[tokenId] = NftItem(tokenId, price, msg.sender, true);
         emit NftItemCreated(tokenId, price, msg.sender, true);
     }
+    function totalSupply() public view returns (uint) {
+        return _allNfts.length;
+    }
+    function tokenByIndex(uint index) public view returns (uint) {
+        require(index < totalSupply(), "Index must be less than total supply");
+        return _allNfts[index];
+    }
+    
     // 买入NFT
     function buyNft(uint tokenId) public payable {
         uint price = _nftItems[tokenId].price;
@@ -63,12 +71,24 @@ contract NftMarket is ERC721URIStorage {
     function getNftItem(uint tokenId) public view returns (NftItem memory) {
         return _nftItems[tokenId];
     }
-    // 获取当前用户nft数量
+    // 获取当前市场nft数量
     function listedItemsCount() public view returns (uint) {
         return _listedItems.current();
     }
     // 判断tokenURI是否存在
     function tokenURIExists(string memory tokenURI) public view returns (bool) {
         return _usedTokenURIs[tokenURI]==true;
+    }
+
+    function _beforeTokenTransfer(address from, address to, uint tokenId,uint256 batchSize) internal virtual override{
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+        if (from == address(0)) {
+            _addTokenToAllTokensEnumeration(tokenId);
+        }
+    }
+
+    function _addTokenToAllTokensEnumeration(uint tokenId) private {
+        _nftItemIndex[tokenId] = _allNfts.length;
+        _allNfts.push(tokenId);
     }
 }
