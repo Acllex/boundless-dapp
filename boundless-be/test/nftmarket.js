@@ -83,5 +83,10 @@ contract('NftMarket', (accounts) => {
             assert.equal(nft1.toNumber(), 1, 'Nft1不正确');
             assert.equal(nft2.toNumber(), 2, 'Nft2不正确');
         })
+        it("售卖列表中应有一个Nfts", async () => {
+            const nftList = await nftmarket.getAllNftsOnSale();
+            assert.equal(nftList.length, 1, '售卖列表中的Nft数量不正确');
+            assert.equal(nftList[0].tokenId, 2, '售卖列表中的Nft不正确');
+        })
     })
 })

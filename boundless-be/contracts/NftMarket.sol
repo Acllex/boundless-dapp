@@ -16,10 +16,14 @@ contract NftMarket is ERC721URIStorage {
     Counters.Counter private _tokenIds;
     // 保存所有的tokenIds
     uint256[] private _allNfts;
-
+    // 保存所有的tokenURI
     mapping(string => bool) private _usedTokenURIs;
+    // 保存所有的NFT,通过tokenId获取NFT
     mapping(uint => NftItem) private _nftItems;
+    // 以tokenId为key,以_allNfts.length为value
     mapping(uint => uint) private _nftItemIndex;
+    mapping(address => mapping(uint => uint)) private _ownedTokens;
+    mapping(uint => uint) private _idToOwnerIndex;
     // 挂牌价
     uint public listingPrice = 0.025 ether;
     
@@ -53,10 +57,30 @@ contract NftMarket is ERC721URIStorage {
         require(index < totalSupply(), "Index must be less than total supply");
         return _allNfts[index];
     }
+    // 获取在售NFT列表
+    function getAllNftsOnSale() public view returns (NftItem[] memory) {
+        uint allItemsCounts = totalSupply();
+        uint currentIndex = 0;
+        NftItem[] memory items = new NftItem[](_listedItems.current());
+
+        for (uint i = 0; i < allItemsCounts; i++) {
+            uint tokenId = tokenByIndex(i);
+            NftItem storage item = _nftItems[tokenId];
+
+            if (item.isListed) {
+                items[currentIndex] = item;
+                currentIndex++;
+            }
+        }
+
+        return items;
+    }
     
     // 买入NFT
     function buyNft(uint tokenId) public payable {
+        // 获取NFT价格
         uint price = _nftItems[tokenId].price;
+        // 获取NFT所有者
         address owner = ERC721.ownerOf(tokenId);
         require(msg.sender != owner, "You already the owner of this NFT");
         require(msg.value == price, "Price must be equal to the NFT price");
@@ -85,10 +109,20 @@ contract NftMarket is ERC721URIStorage {
         if (from == address(0)) {
             _addTokenToAllTokensEnumeration(tokenId);
         }
+        if (from != to) {
+            _addTokenToOwnerEnumeration(to, tokenId);
+        }
     }
 
     function _addTokenToAllTokensEnumeration(uint tokenId) private {
         _nftItemIndex[tokenId] = _allNfts.length;
         _allNfts.push(tokenId);
+    }
+
+    function _addTokenToOwnerEnumeration(address to, uint tokenId) private {
+        // to拥有的NFT数量
+        uint length = balanceOf(to);
+        _ownedTokens[to][length] = tokenId;
+        _idToOwnerIndex[tokenId] = length;
     }
 }
