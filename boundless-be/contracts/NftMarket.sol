@@ -50,12 +50,32 @@ contract NftMarket is ERC721URIStorage {
         _nftItems[tokenId] = NftItem(tokenId, price, msg.sender, true);
         emit NftItemCreated(tokenId, price, msg.sender, true);
     }
+    // 获取调用地址的所有NFT
+    function getOwnedNfts() public view returns (NftItem[] memory) {
+        uint ownedNftsCount = balanceOf(msg.sender);
+        NftItem[] memory items = new NftItem[](ownedNftsCount);
+
+        for (uint i = 0; i < ownedNftsCount; i++) {
+            uint tokenId = tokenOfOwnerByIndex(msg.sender, i);
+            NftItem storage item = _nftItems[tokenId];
+            items[i] = item;
+        }
+
+        return items;
+    }
+    // 获取所有nft数量
     function totalSupply() public view returns (uint) {
         return _allNfts.length;
     }
+    // 通过index获取token
     function tokenByIndex(uint index) public view returns (uint) {
         require(index < totalSupply(), "Index must be less than total supply");
         return _allNfts[index];
+    }
+    // 通过地址和index获取token
+    function tokenOfOwnerByIndex(address owner, uint index) public view returns (uint) {
+        require(index < balanceOf(owner), "Index must be less than owner balance");
+        return _ownedTokens[owner][index];
     }
     // 获取在售NFT列表
     function getAllNftsOnSale() public view returns (NftItem[] memory) {
