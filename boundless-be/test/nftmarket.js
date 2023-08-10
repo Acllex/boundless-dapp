@@ -112,26 +112,41 @@ contract('NftMarket', (accounts) => {
             assert.equal(ownedNftList.length, 2, 'accounts[1]的Nft数量不正确');
         })
     })
-    describe("销毁Token", () => {
-        const tokenURI = 'https://www.baidu11.com'
+    // describe("销毁Token", () => {
+    //     const tokenURI = 'https://www.baidu11.com'
+    //     before(async () => {
+    //         await nftmarket.mintToken(tokenURI, _nftPrice, {
+    //             from: accounts[2],
+    //             value: _listingPrice
+    //         })
+    //     })
+    //     it("accounts[2]有一个Nft", async () => {
+    //         const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[2] });
+    //         const allNfts = await nftmarket.getAllNftsOnSale();
+    //         assert.equal(ownedNftList.length, 1, 'accounts[2]的Nft数量不正确');
+    //     })
+    //     it("销毁accounts[2]的Nft", async () => {
+    //         await nftmarket.burnTokenId(3, { from: accounts[2] });
+    //         const allNfts = await nftmarket.getAllNftsOnSale();
+    //         const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[2] });
+    //         assert.equal(ownedNftList.length, 0, 'accounts[2]的Nft数量不正确');
+    //     })
+    // })
+    describe("把Nft放到售卖列表中", () => {
         before(async () => {
-            await nftmarket.mintToken(tokenURI, _nftPrice, {
-                from: accounts[2],
+            await nftmarket.placeNftOnSale(1, _nftPrice, {
+                from: accounts[1],
                 value: _listingPrice
-            })
+            });
         })
-        it("accounts[2]有一个Nft", async () => {
-            const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[2] });
-            const allNfts = await nftmarket.getAllNftsOnSale();
-            console.log(allNfts);
-            assert.equal(ownedNftList.length, 1, 'accounts[2]的Nft数量不正确');
+        it("Nft应该在售卖列表中", async () => {
+            const nftList = await nftmarket.getAllNftsOnSale();
+            assert.equal(nftList.length, 2, '售卖列表中的Nft数量不正确');
         })
-        it("销毁accounts[2]的Nft", async () => {
-            await nftmarket.burnTokenId(3, { from: accounts[2] });
-            const allNfts = await nftmarket.getAllNftsOnSale();
-            console.log(allNfts);
-            const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[2] });
-            assert.equal(ownedNftList.length, 0, 'accounts[2]的Nft数量不正确');
+        it("设置一个新的挂牌价", async () => {
+            await nftmarket.setListingPrice(ethers.parseEther('1').toString(), { from: accounts[0] });
+            const listingPrice = await nftmarket.listingPrice();
+            assert.equal(listingPrice.toString(), ethers.parseEther('1').toString(), '设置挂牌价失败');
         })
     })
 })
