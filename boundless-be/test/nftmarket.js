@@ -105,12 +105,33 @@ contract('NftMarket', (accounts) => {
         })
         it("accounts[0]应该有0个Nft", async () => {
             const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[0] });
-            console.log(ownedNftList);
             assert.equal(ownedNftList.length, 0, 'accounts[0]的Nft数量不正确');
         })
         it("accounts[1]应该有两个Nft", async () => {
             const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[1] });
             assert.equal(ownedNftList.length, 2, 'accounts[1]的Nft数量不正确');
+        })
+    })
+    describe("销毁Token", () => {
+        const tokenURI = 'https://www.baidu11.com'
+        before(async () => {
+            await nftmarket.mintToken(tokenURI, _nftPrice, {
+                from: accounts[2],
+                value: _listingPrice
+            })
+        })
+        it("accounts[2]有一个Nft", async () => {
+            const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[2] });
+            const allNfts = await nftmarket.getAllNftsOnSale();
+            console.log(allNfts);
+            assert.equal(ownedNftList.length, 1, 'accounts[2]的Nft数量不正确');
+        })
+        it("销毁accounts[2]的Nft", async () => {
+            await nftmarket.burnTokenId(3, { from: accounts[2] });
+            const allNfts = await nftmarket.getAllNftsOnSale();
+            console.log(allNfts);
+            const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[2] });
+            assert.equal(ownedNftList.length, 0, 'accounts[2]的Nft数量不正确');
         })
     })
 })
