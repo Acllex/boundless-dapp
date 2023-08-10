@@ -99,4 +99,18 @@ contract('NftMarket', (accounts) => {
             assert.equal(ownedNftList.length, 1, 'accounts[0]的Nft数量不正确');
         })
     })
+    describe("token transfers to new owner", () => {
+        before(async () => {
+            await nftmarket.transferFrom(accounts[0], accounts[1], 2);
+        })
+        it("accounts[0]应该有0个Nft", async () => {
+            const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[0] });
+            console.log(ownedNftList);
+            assert.equal(ownedNftList.length, 0, 'accounts[0]的Nft数量不正确');
+        })
+        it("accounts[1]应该有两个Nft", async () => {
+            const ownedNftList = await nftmarket.getOwnedNfts({ from: accounts[1] });
+            assert.equal(ownedNftList.length, 2, 'accounts[1]的Nft数量不正确');
+        })
+    })
 })

@@ -29,6 +29,10 @@ contract NftMarket is ERC721URIStorage {
     
     event NftItemCreated(uint tokenId, uint price, address creator, bool isListed);
     constructor() ERC721("NftMarket", "NFTM") {}
+    // 销毁NFT
+    function burnTokenId(uint tokenId) public {
+        _burn(tokenId);
+    }
     // 铸造NFT
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
         require(!tokenURIExists(tokenURI), "This token URI already exists");
@@ -128,8 +132,12 @@ contract NftMarket is ERC721URIStorage {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
         if (from == address(0)) {
             _addTokenToAllTokensEnumeration(tokenId);
+        }else if (from != to) {
+            _removeTokenFromOwnerEnumeration(from, tokenId);
         }
-        if (from != to) {
+        if(to == address(0)){
+            _removeTokenFromAllTokensEnumeration(tokenId);
+        } else if (to != from) {
             _addTokenToOwnerEnumeration(to, tokenId);
         }
     }
@@ -138,11 +146,48 @@ contract NftMarket is ERC721URIStorage {
         _nftItemIndex[tokenId] = _allNfts.length;
         _allNfts.push(tokenId);
     }
-
+    // 将tokenId添加所有者的枚举中
     function _addTokenToOwnerEnumeration(address to, uint tokenId) private {
         // to拥有的NFT数量
         uint length = balanceOf(to);
+        // 将tokenId添加到to拥有的NFT数组中
         _ownedTokens[to][length] = tokenId;
+        // tokenId在to拥有的NFT数组中的index
         _idToOwnerIndex[tokenId] = length;
+    }
+    // 将tokenId从所有者的枚举中删除
+    function _removeTokenFromOwnerEnumeration(address from, uint tokenId) private {
+        // from拥有的NFT数量
+        uint lastTokenIndex = balanceOf(from) - 1;
+        // tokenId在from拥有的NFT数组中的index
+        uint tokenIndex = _idToOwnerIndex[tokenId];
+        /**
+         * 如果要删除的toukeId不是from拥有的NFT数组中的最后一个NFT
+         * 则把from拥有的NFT数组中的最后一个NFT移到要删除的tokenId的位置
+         */
+        if(tokenIndex != lastTokenIndex){
+            // from拥有的NFT数组中的最后一个NFT的tokenId
+            uint lastTokenId = _ownedTokens[from][lastTokenIndex];
+            // 将from拥有的NFT数组中的最后一个NFT移到要删除的tokenId的位置
+            _ownedTokens[from][tokenIndex] = lastTokenId;
+            // 将要最后的TokenId和index对应起来
+            _idToOwnerIndex[lastTokenId] = tokenIndex;
+        }
+        // 删除tokenId在from拥有的NFT数组中的index
+        delete _idToOwnerIndex[tokenId];
+        // 删除from拥有的NFT数组中的最后一个NFT
+        delete _ownedTokens[from][lastTokenIndex];
+    }
+    // 删除NFT
+    function _removeTokenFromAllTokensEnumeration(uint tokenId) private {
+        uint lastTokenIndex = _allNfts.length - 1;
+        uint tokenIndex = _nftItemIndex[tokenId];
+        uint lastTokenId = _allNfts[lastTokenIndex];
+
+        _allNfts[tokenIndex] = lastTokenId;
+        _nftItemIndex[lastTokenId] = tokenIndex;
+
+        delete _nftItemIndex[tokenId];
+        _allNfts.pop();
     }
 }
