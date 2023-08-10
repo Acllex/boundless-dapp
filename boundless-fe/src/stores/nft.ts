@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
-export const useNftStore = defineStore('nft', () => {
+export const useNftListStore = defineStore('nftList', () => {
   const nftInfo = ref({ name: '', symbol: '' })
   async function getNftInfo() {
     const { contract } = useWeb3Api()
