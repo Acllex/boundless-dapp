@@ -764,4 +764,4 @@ export const NETWORK_ABI = [
     constant: true
   }
 ]
-export const NETWORK_ADDRESS = '0x9dAfA82a44fF9E8e22122181B97e8B7Bb097bBC7'
+export const NETWORK_ADDRESS = '0xB0470E5C16F252D7e09a0136fb8eeAe45dE9A906'

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import NftItem from '@/components/nft/item/NftItem.vue'
 import nft from '@/content/meta.json'
+import { useNftListStore } from '@/stores/nft'
+const nftListStore = useNftListStore()
+// const { getNftList } = nftListStore
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 import { Contract, ethers } from 'ethers'
 import { NETWORK_ABI, NETWORK_ADDRESS } from '@/utils'
+import type { NftMarketContract } from '@/type/nftMarketContract'
 
 export function useWeb3Api() {
   let provider
@@ -13,7 +14,11 @@ export function useWeb3Api() {
     console.log('Please set NETWORK_ABI and NETWORK_ADDRESS')
     return { ethereum: undefined, provider: null, contract: null }
   }
-  const contract = new Contract(NETWORK_ADDRESS, NETWORK_ABI, provider)
+  const contract = new Contract(
+    NETWORK_ADDRESS,
+    NETWORK_ABI,
+    provider
+  ) as unknown as NftMarketContract
   console.log('准备好了')
   return { ethereum: window.ethereum, provider, contract }
 }

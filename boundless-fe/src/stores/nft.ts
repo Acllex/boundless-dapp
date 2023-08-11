@@ -8,6 +8,10 @@ export const useNftListStore = defineStore('nftList', () => {
     if (!contract) return
     const name = await contract.name()
     const symbol = await contract.symbol()
+    const nftList = await contract.getAllNftsOnSale()
+    nftList.forEach(async (nft) => {
+      console.log(await contract.tokenURI(nft.tokenId.toString()))
+    })
     nftInfo.value = { name, symbol }
   }
   getNftInfo()
