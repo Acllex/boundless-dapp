@@ -1,6 +1,7 @@
-import { onMounted, ref, watchEffect } from 'vue'
+import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
+import { ElMessage } from 'element-plus'
 const { provider, ethereum } = useWeb3Api()
 const NETWORKS: { [k: number]: string } = {
   1: '以太坊主网',
@@ -41,27 +42,31 @@ export const useUsersStore = defineStore('users', () => {
 
   // 获取用户信息
   async function getUserInfo() {
-    if (!provider) return
+    if (!provider || !ethereum) return
     userInfo.value = { isLoading: true, accounts: '' }
     const signer = await provider.getSigner()
     const accounts = await signer.getAddress()
     userInfo.value = { accounts, isLoading: false }
   }
 
-  // 监听账户变化
-  onMounted(() => {
-    if (!ethereum) return
-    userInfo.value = { isLoading: true, accounts: '' }
-    ethereum.on('accountsChanged', (accounts: string[]) => {
-      userInfo.value = { isLoading: false, accounts: accounts[0] }
-    })
-  })
-  // 监听网络变化
   onMounted(async () => {
     if (!ethereum || !provider) {
       networkInfo.value = { isLoading: false, name: '无法获取网络' }
       return
     }
+    // 监听账户变化
+    userInfo.value = { isLoading: true, accounts: '' }
+    ethereum.on('accountsChanged', (accounts: string[]) => {
+      if (accounts.length === 0) {
+        userInfo.value = { isLoading: false, accounts: '' }
+        return
+      }
+      if (accounts[0] === userInfo.value.accounts) return
+      ElMessage.success('账户切换成功')
+      userInfo.value = { isLoading: false, accounts: accounts[0] }
+    })
+
+    // 监听网络变化
     networkInfo.value = { isLoading: true, name: '' }
     const { chainId } = await provider.getNetwork()
     networkInfo.value = { isLoading: false, name: NETWORKS[Number(chainId)] }

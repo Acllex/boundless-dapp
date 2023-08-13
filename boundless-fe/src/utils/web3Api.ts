@@ -1,5 +1,5 @@
 import { Contract, ethers } from 'ethers'
-import { NETWORK_ABI, NETWORK_ADDRESS } from '@/utils'
+import { abi, networks } from '@/assets/NftMarket.json'
 import type { NftMarketContract } from '@/type/nftMarketContract'
 
 export function useWeb3Api() {
@@ -10,13 +10,13 @@ export function useWeb3Api() {
   } else {
     provider = new ethers.BrowserProvider(window.ethereum)
   }
-  if (!NETWORK_ABI && !NETWORK_ADDRESS) {
-    console.log('Please set NETWORK_ABI and NETWORK_ADDRESS')
+  if (!abi && !networks) {
+    console.log('Please set abi and networks')
     return { ethereum: undefined, provider: null, contract: null }
   }
   const contract = new Contract(
-    NETWORK_ADDRESS,
-    NETWORK_ABI,
+    networks['1691497049269'].address,
+    abi,
     provider
   ) as unknown as NftMarketContract
   console.log('准备好了')
