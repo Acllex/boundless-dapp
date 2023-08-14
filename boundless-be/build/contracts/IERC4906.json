@@ -332,9 +332,15 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/interfaces/IERC4906.sol",
     "exportedSymbols": {
-      "IERC165": [2075],
-      "IERC4906": [137],
-      "IERC721": [1183]
+      "IERC165": [
+        2075
+      ],
+      "IERC4906": [
+        137
+      ],
+      "IERC721": [
+        1183
+      ]
     },
     "id": 138,
     "license": "MIT",
@@ -342,7 +348,12 @@
     "nodes": [
       {
         "id": 117,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "107:23:2"
       },
@@ -409,7 +420,11 @@
         },
         "fullyImplemented": false,
         "id": 137,
-        "linearizedBaseContracts": [137, 1183, 2075],
+        "linearizedBaseContracts": [
+          137,
+          1183,
+          2075
+        ],
         "name": "IERC4906",
         "nameLocation": "236:8:2",
         "nodeType": "ContractDefinition",
@@ -556,7 +571,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-08-11T18:48:33.472Z",
+  "updatedAt": "2023-08-14T13:22:23.261Z",
   "devdoc": {
     "events": {
       "BatchMetadataUpdate(uint256,uint256)": {

@@ -21277,54 +21277,22 @@
   "ast": {
     "absolutePath": "project:/contracts/NftMarket.sol",
     "exportedSymbols": {
-      "Address": [
-        1714
-      ],
-      "Context": [
-        1736
-      ],
-      "Counters": [
-        1810
-      ],
-      "ERC165": [
-        2063
-      ],
-      "ERC721": [
-        1067
-      ],
-      "ERC721URIStorage": [
-        1357
-      ],
-      "IERC165": [
-        2075
-      ],
-      "IERC4906": [
-        137
-      ],
-      "IERC721": [
-        1183
-      ],
-      "IERC721Metadata": [
-        1384
-      ],
-      "IERC721Receiver": [
-        1201
-      ],
-      "Math": [
-        2941
-      ],
-      "NftMarket": [
-        3930
-      ],
-      "Ownable": [
-        112
-      ],
-      "SignedMath": [
-        3046
-      ],
-      "Strings": [
-        2039
-      ]
+      "Address": [1714],
+      "Context": [1736],
+      "Counters": [1810],
+      "ERC165": [2063],
+      "ERC721": [1067],
+      "ERC721URIStorage": [1357],
+      "IERC165": [2075],
+      "IERC4906": [137],
+      "IERC721": [1183],
+      "IERC721Metadata": [1384],
+      "IERC721Receiver": [1201],
+      "Math": [2941],
+      "NftMarket": [3930],
+      "Ownable": [112],
+      "SignedMath": [3046],
+      "Strings": [2039]
     },
     "id": 3931,
     "license": "MIT",
@@ -21332,12 +21300,7 @@
     "nodes": [
       {
         "id": 3161,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".13"
-        ],
+        "literals": ["solidity", "^", "0.8", ".13"],
         "nodeType": "PragmaDirective",
         "src": "104:24:19"
       },
@@ -21410,18 +21373,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 3930,
-        "linearizedBaseContracts": [
-          3930,
-          112,
-          1357,
-          1067,
-          1384,
-          137,
-          1183,
-          2063,
-          2075,
-          1736
-        ],
+        "linearizedBaseContracts": [3930, 112, 1357, 1067, 1384, 137, 1183, 2063, 2075, 1736],
         "name": "NftMarket",
         "nameLocation": "329:9:19",
         "nodeType": "ContractDefinition",
@@ -22277,10 +22229,7 @@
                       "id": 3241,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1394:7:19",
                       "typeDescriptions": {
@@ -22452,9 +22401,7 @@
                       "id": 3258,
                       "name": "_burn",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        1356
-                      ],
+                      "overloadedDeclarations": [1356],
                       "referencedDeclaration": 1356,
                       "src": "1560:5:19",
                       "typeDescriptions": {
@@ -22640,10 +22587,7 @@
                       "id": 3272,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1702:7:19",
                       "typeDescriptions": {
@@ -22760,10 +22704,7 @@
                       "id": 3280,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1820:7:19",
                       "typeDescriptions": {
@@ -22891,9 +22832,7 @@
                   "src": "1937:24:19"
                 },
                 {
-                  "assignments": [
-                    3299
-                  ],
+                  "assignments": [3299],
                   "declarations": [
                     {
                       "constant": false,
@@ -23028,10 +22967,7 @@
                       "id": 3304,
                       "name": "_safeMint",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        635,
-                        664
-                      ],
+                      "overloadedDeclarations": [635, 664],
                       "referencedDeclaration": 635,
                       "src": "2022:9:19",
                       "typeDescriptions": {
@@ -23483,10 +23419,7 @@
                       "id": 3336,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2315:7:19",
                       "typeDescriptions": {
@@ -23891,9 +23824,7 @@
               "src": "2618:368:19",
               "statements": [
                 {
-                  "assignments": [
-                    3372
-                  ],
+                  "assignments": [3372],
                   "declarations": [
                     {
                       "constant": false,
@@ -23990,9 +23921,7 @@
                   "src": "2629:43:19"
                 },
                 {
-                  "assignments": [
-                    3382
-                  ],
+                  "assignments": [3382],
                   "declarations": [
                     {
                       "constant": false,
@@ -24124,9 +24053,7 @@
                     "src": "2792:162:19",
                     "statements": [
                       {
-                        "assignments": [
-                          3401
-                        ],
+                        "assignments": [3401],
                         "declarations": [
                           {
                             "constant": false,
@@ -24239,9 +24166,7 @@
                         "src": "2807:49:19"
                       },
                       {
-                        "assignments": [
-                          3410
-                        ],
+                        "assignments": [3410],
                         "declarations": [
                           {
                             "constant": false,
@@ -24433,9 +24358,7 @@
                   },
                   "id": 3422,
                   "initializationExpression": {
-                    "assignments": [
-                      3391
-                    ],
+                    "assignments": [3391],
                     "declarations": [
                       {
                         "constant": false,
@@ -24804,10 +24727,7 @@
                       "id": 3442,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3222:7:19",
                       "typeDescriptions": {
@@ -25079,10 +24999,7 @@
                       "id": 3464,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3473:7:19",
                       "typeDescriptions": {
@@ -25296,9 +25213,7 @@
               "src": "3702:480:19",
               "statements": [
                 {
-                  "assignments": [
-                    3488
-                  ],
+                  "assignments": [3488],
                   "declarations": [
                     {
                       "constant": false,
@@ -25363,9 +25278,7 @@
                   "src": "3713:35:19"
                 },
                 {
-                  "assignments": [
-                    3493
-                  ],
+                  "assignments": [3493],
                   "declarations": [
                     {
                       "constant": false,
@@ -25416,9 +25329,7 @@
                   "src": "3759:21:19"
                 },
                 {
-                  "assignments": [
-                    3500
-                  ],
+                  "assignments": [3500],
                   "declarations": [
                     {
                       "constant": false,
@@ -25583,9 +25494,7 @@
                     "src": "3908:242:19",
                     "statements": [
                       {
-                        "assignments": [
-                          3521
-                        ],
+                        "assignments": [3521],
                         "declarations": [
                           {
                             "constant": false,
@@ -25668,9 +25577,7 @@
                         "src": "3923:30:19"
                       },
                       {
-                        "assignments": [
-                          3528
-                        ],
+                        "assignments": [3528],
                         "declarations": [
                           {
                             "constant": false,
@@ -25933,9 +25840,7 @@
                   },
                   "id": 3547,
                   "initializationExpression": {
-                    "assignments": [
-                      3511
-                    ],
+                    "assignments": [3511],
                     "declarations": [
                       {
                         "constant": false,
@@ -26117,9 +26022,7 @@
               "src": "4257:543:19",
               "statements": [
                 {
-                  "assignments": [
-                    3557
-                  ],
+                  "assignments": [3557],
                   "declarations": [
                     {
                       "constant": false,
@@ -26206,9 +26109,7 @@
                   "src": "4296:37:19"
                 },
                 {
-                  "assignments": [
-                    3564
-                  ],
+                  "assignments": [3564],
                   "declarations": [
                     {
                       "constant": false,
@@ -26396,10 +26297,7 @@
                       "id": 3570,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4425:7:19",
                       "typeDescriptions": {
@@ -26516,10 +26414,7 @@
                       "id": 3578,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4501:7:19",
                       "typeDescriptions": {
@@ -27111,10 +27006,7 @@
                       "id": 3622,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4902:7:19",
                       "typeDescriptions": {
@@ -27261,10 +27153,7 @@
                       "id": 3633,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4996:7:19",
                       "typeDescriptions": {
@@ -27381,10 +27270,7 @@
                       "id": 3643,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "5082:7:19",
                       "typeDescriptions": {
@@ -28135,9 +28021,7 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              1038
-            ],
+            "baseFunctions": [1038],
             "body": {
               "id": 3773,
               "nodeType": "Block",
@@ -29176,9 +29060,7 @@
               "src": "6623:277:19",
               "statements": [
                 {
-                  "assignments": [
-                    3801
-                  ],
+                  "assignments": [3801],
                   "declarations": [
                     {
                       "constant": false,
@@ -29511,9 +29393,7 @@
               "src": "7033:1094:19",
               "statements": [
                 {
-                  "assignments": [
-                    3829
-                  ],
+                  "assignments": [3829],
                   "declarations": [
                     {
                       "constant": false,
@@ -29630,9 +29510,7 @@
                   "src": "7079:41:19"
                 },
                 {
-                  "assignments": [
-                    3837
-                  ],
+                  "assignments": [3837],
                   "declarations": [
                     {
                       "constant": false,
@@ -29756,9 +29634,7 @@
                     "src": "7481:421:19",
                     "statements": [
                       {
-                        "assignments": [
-                          3846
-                        ],
+                        "assignments": [3846],
                         "declarations": [
                           {
                             "constant": false,
@@ -30247,9 +30123,7 @@
               "src": "8219:329:19",
               "statements": [
                 {
-                  "assignments": [
-                    3888
-                  ],
+                  "assignments": [3888],
                   "declarations": [
                     {
                       "constant": false,
@@ -30344,9 +30218,7 @@
                   "src": "8230:41:19"
                 },
                 {
-                  "assignments": [
-                    3895
-                  ],
+                  "assignments": [3895],
                   "declarations": [
                     {
                       "constant": false,
@@ -30418,9 +30290,7 @@
                   "src": "8282:40:19"
                 },
                 {
-                  "assignments": [
-                    3901
-                  ],
+                  "assignments": [3901],
                   "declarations": [
                     {
                       "constant": false,
@@ -30970,174 +30840,10 @@
       "links": {},
       "address": "0xB0470E5C16F252D7e09a0136fb8eeAe45dE9A906",
       "transactionHash": "0xb97ae6bfa2f59aba42340f3ef6b561165f69161d1ff2cc39cbb28b9b4f9ff691"
-    },
-    "1691975041468": {
-      "events": {
-        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "approved",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            }
-          ],
-          "name": "Approval",
-          "type": "event"
-        },
-        "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "operator",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "bool",
-              "name": "approved",
-              "type": "bool"
-            }
-          ],
-          "name": "ApprovalForAll",
-          "type": "event"
-        },
-        "0x6bd5c950a8d8df17f772f5af37cb3655737899cbf903264b9795592da439661c": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_fromTokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_toTokenId",
-              "type": "uint256"
-            }
-          ],
-          "name": "BatchMetadataUpdate",
-          "type": "event"
-        },
-        "0xf8e1a15aba9398e019f0b49df1a4fde98ee17ae345cb5f6b5e2c27f5033e8ce7": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_tokenId",
-              "type": "uint256"
-            }
-          ],
-          "name": "MetadataUpdate",
-          "type": "event"
-        },
-        "0x470031062672bc0246e132c723a729c4676710ec663a29e86c88678032daddea": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "creator",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "bool",
-              "name": "isListed",
-              "type": "bool"
-            }
-          ],
-          "name": "NftItemCreated",
-          "type": "event"
-        },
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "from",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            }
-          ],
-          "name": "Transfer",
-          "type": "event"
-        }
-      },
-      "links": {},
-      "address": "0x7a8cA423f4F53742231A31BeC8dFa5924E15dE75",
-      "transactionHash": "0xe4b6e6c30d8dc81e00f42edf570eedbc608aec4d619771315e53f2ff4b0f37c0"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-08-14T09:24:54.941Z",
+  "updatedAt": "2023-08-11T18:49:07.205Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

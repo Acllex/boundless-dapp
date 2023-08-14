@@ -2,7 +2,7 @@ import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
 import { ElMessage } from 'element-plus'
-const { provider, ethereum } = useWeb3Api()
+const { provider, ethereum } = await useWeb3Api()
 const NETWORKS: { [k: number]: string } = {
   1: '以太坊主网',
   3: 'Ropsten测试网',

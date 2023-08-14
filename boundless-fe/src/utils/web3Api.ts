@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { ethers, Contract } from 'ethers'
 import { abi, networks } from '@/content/NftMarket.json'
 import type { NftMarketContract } from '@/type/nftMarketContract'
 const NETWORK = {
@@ -7,7 +7,7 @@ const NETWORK = {
 type Networks = typeof NETWORK
 
 const keys = Object.keys(networks) as unknown as (keyof Networks)[]
-export function useWeb3Api() {
+export async function useWeb3Api() {
   let provider
   if (window.ethereum === undefined) {
     console.log('请安装metamask')
@@ -23,7 +23,13 @@ export function useWeb3Api() {
     networks[keys[keys.length - 1]]['address'],
     abi,
     provider
-  ) as unknown as NftMarketContract
+  ) as unknown as Contract
+  const signer = await provider.getSigner()
+  const signedContract = contract.connect(signer)
   console.log('准备好了')
-  return { ethereum: window.ethereum, provider, contract }
+  return {
+    ethereum: window.ethereum,
+    provider,
+    contract: signedContract as unknown as NftMarketContract
+  }
 }

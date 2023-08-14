@@ -49,7 +49,9 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
     "exportedSymbols": {
-      "IERC721Receiver": [1201]
+      "IERC721Receiver": [
+        1201
+      ]
     },
     "id": 1202,
     "license": "MIT",
@@ -57,7 +59,12 @@
     "nodes": [
       {
         "id": 1185,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "116:23:6"
       },
@@ -75,7 +82,9 @@
         },
         "fullyImplemented": false,
         "id": 1201,
-        "linearizedBaseContracts": [1201],
+        "linearizedBaseContracts": [
+          1201
+        ],
         "name": "IERC721Receiver",
         "nameLocation": "304:15:6",
         "nodeType": "ContractDefinition",
@@ -266,7 +275,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-08-11T18:48:33.500Z",
+  "updatedAt": "2023-08-14T13:22:23.281Z",
   "devdoc": {
     "details": "Interface for any contract that wants to support safeTransfers from ERC721 asset contracts.",
     "kind": "dev",
