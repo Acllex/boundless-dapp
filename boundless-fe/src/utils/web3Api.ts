@@ -1,7 +1,12 @@
-import { Contract, ethers } from 'ethers'
-import { abi, networks } from '@/assets/NftMarket.json'
+import { ethers } from 'ethers'
+import { abi, networks } from '@/content/NftMarket.json'
 import type { NftMarketContract } from '@/type/nftMarketContract'
+const NETWORK = {
+  '1691497049269': 'a'
+}
+type Networks = typeof NETWORK
 
+const keys = Object.keys(networks) as unknown as (keyof Networks)[]
 export function useWeb3Api() {
   let provider
   if (window.ethereum === undefined) {
@@ -14,8 +19,8 @@ export function useWeb3Api() {
     console.log('Please set abi and networks')
     return { ethereum: undefined, provider: null, contract: null }
   }
-  const contract = new Contract(
-    networks['1691497049269'].address,
+  const contract = new ethers.Contract(
+    networks[keys[keys.length - 1]]['address'],
     abi,
     provider
   ) as unknown as NftMarketContract
