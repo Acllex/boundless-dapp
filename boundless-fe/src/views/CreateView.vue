@@ -2,6 +2,7 @@
 import { NFTStorage } from 'nft.storage'
 import { UploadFilled } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { genFileId, ElMessage } from 'element-plus'
 import type {
   FormInstance,
@@ -10,11 +11,16 @@ import type {
   UploadRawFile,
   UploadUserFile
 } from 'element-plus'
+import { nft_storage_token } from '@/content/nftStorage.json'
 import { ipfsToHttps } from '@/utils'
+import { useUsersStore } from '@/stores/users'
+import { useNftStore } from '@/stores/nft'
+const usersStore = useUsersStore()
+const nftStore = useNftStore()
+const { userInfo } = storeToRefs(usersStore)
+const { addNft } = nftStore
 
-const NFT_STORAGE_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGRGNzE1YTJkMDRGNGJGNWJEMUVEODRiNmUzY2IwOWY3N0ZCN0RGM0UiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5MTg1ODM4MTgzNSwibmFtZSI6Im5mdCJ9.1cHnblNzTINKYKSDy4qBDTbOx5SrY7_vbIe2COZ17Z4'
-const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
+const client = new NFTStorage({ token: nft_storage_token })
 const formRef = ref<FormInstance>()
 const upload = ref<UploadInstance>()
 const isSwitch = ref(false)
@@ -55,29 +61,25 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 }
 
 async function onSubmit(formEl: FormInstance | undefined) {
+  if (!userInfo.value.accounts) return
   if (!formEl) return
-  console.log(formEl)
 
-  const isSubmit = await formEl.validate((valid, fields) => {
+  const isSubmit = await formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
       return true
     } else {
-      console.log('error submit!', fields)
       return false
     }
   })
   if (!isSubmit) return
-  // const img: any = await fileToBlob(sizeForm.image[0].raw as File)
-  // const cid = await client.storeBlob(img)
   const metadata = await client.store({
     name: ruleForm.name,
     description: ruleForm.desc,
     image: ruleForm.image[0].raw as File
   })
-  console.log(metadata)
-  const data = await (await fetch(ipfsToHttps(metadata.url))).json()
-  console.log(data)
+  if (!metadata) return
+  const uriData = await (await fetch(ipfsToHttps(metadata.url))).json()
+  await addNft(ipfsToHttps(metadata.url), '1')
 }
 </script>
 <template>
