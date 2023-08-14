@@ -17,9 +17,12 @@ export const useNftStore = defineStore('nft', () => {
     const name = await contract.name()
     const symbol = await contract.symbol()
     const nftLists = await contract.getAllNftsOnSale()
+    console.log(nftLists, 'nftLists')
 
     nftLists.forEach(async (nft: { tokenId: { toString: () => any } }) => {
       const uri = await contract.tokenURI(nft.tokenId.toString())
+      console.log(uri, 'uri')
+
       nftList.values.apply({ tokenId: nft.tokenId.toString(), uri })
     })
     nftInfo.value = { name, symbol }
@@ -27,16 +30,16 @@ export const useNftStore = defineStore('nft', () => {
   // 添加nft
   async function addNft(uri: string, price: string) {
     if (!contract || !ethereum) return
-    const wei = ethers.parseEther(price).toString()
+    const wei = ethers.parseEther(price)
     console.log(uri, wei, 'uri, wei')
     try {
-      const tx = await contract.mintToken(uri, wei)
+      const tx = await contract.mintToken(uri, wei, {
+        value: ethers.parseEther((0.025).toString())
+      })
+      console.log(tx, 'tx')
     } catch (error) {
       console.log(error, 'error')
     }
-
-    // const receipt = await tx.wait()
-    // return tokenId
   }
 
   return { nftInfo, nftList, getNftList, addNft }
