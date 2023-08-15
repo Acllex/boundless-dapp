@@ -9,7 +9,7 @@
             <el-skeleton-item variant="text" class="mr-4" />
             <el-skeleton-item variant="text" class="w-[30%]" />
           </div>
-          <el-skeleton-item variant="p" class="w-1/2" />
+          <el-skeleton-item variant="p" class="w-1/2 mt-2" />
         </div>
       </template>
     </el-skeleton>

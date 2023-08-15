@@ -14,7 +14,7 @@ const { nftList } = storeToRefs(nftStore)
     </div>
   </div>
   <div v-else class="grid sm:grid-cols-1 gap-4 lg:grid-cols-4">
-    <div v-for="i in 6" :key="i">
+    <div v-for="i in 8" :key="i">
       <SkeletonCard />
     </div>
   </div>

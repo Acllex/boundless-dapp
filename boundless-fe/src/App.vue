@@ -5,7 +5,9 @@ import AppHead from '@/components/header/app-head.vue'
 
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <AppHead />
+    <Suspense>
+      <AppHead />
+    </Suspense>
     <div class="py-8 px-4 min-w-full overflow-hidden">
       <RouterView />
     </div>
