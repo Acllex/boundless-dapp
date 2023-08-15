@@ -1,22 +1,22 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import SkeletonCard from '@/components/skeletonCard/skeleton-card.vue'
 import NftItem from '@/components/nft/item/NftItem.vue'
-import nft from '@/content/meta.json'
 import { useNftStore } from '@/stores/nft'
-
 const nftStore = useNftStore()
-const { getNftList } = nftStore
 const { nftList } = storeToRefs(nftStore)
-console.log(nftList.value)
-
-await getNftList()
 </script>
 
 <template>
-  <el-row :gutter="20">
-    <el-col v-for="o in nft" :key="o" :span="6">
-      <NftItem class="text-gray-900" :item-info="o" />
-    </el-col>
-  </el-row>
+  <div v-if="nftList.length" class="grid sm:grid-cols-1 gap-4 lg:grid-cols-4">
+    <div v-for="(o, i) in nftList" :key="i">
+      <NftItem :item-info="o" />
+    </div>
+  </div>
+  <div v-else class="grid sm:grid-cols-1 gap-4 lg:grid-cols-4">
+    <div v-for="i in 6" :key="i">
+      <SkeletonCard />
+    </div>
+  </div>
 </template>
 @/stores/nftList
