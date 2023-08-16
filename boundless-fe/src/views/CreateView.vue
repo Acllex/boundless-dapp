@@ -11,23 +11,25 @@ import type {
   UploadRawFile,
   UploadUserFile
 } from 'element-plus'
-import { nft_storage_token } from '@/content/nftStorage.json'
 import { ipfsToHttps } from '@/utils'
 import { useUsersStore } from '@/stores/users'
 import { useNftStore } from '@/stores/nft'
+import { fetch } from 'nft.storage/src/platform.js'
 const usersStore = useUsersStore()
 const nftStore = useNftStore()
 const { userInfo } = storeToRefs(usersStore)
 const { addNft } = nftStore
 
-const client = new NFTStorage({ token: nft_storage_token })
+const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_TOKEN })
 const formRef = ref<FormInstance>()
+const uriFormRef = ref<FormInstance>()
 const upload = ref<UploadInstance>()
 const isSwitch = ref(false)
+const isUriLoading = ref(false)
 const rules = reactive({
   name: [
     { required: true, message: '请输入NFT名称', trigger: 'blur' },
-    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
+    { min: 3, max: 6, message: 'Length should be 3 to 5', trigger: 'blur' }
   ],
   image: [{ required: true, message: '请上传图片', trigger: 'blur' }],
   health: [{ required: true, message: 'Please enter the health', trigger: 'blur' }],
@@ -41,6 +43,14 @@ const ruleForm = reactive({
   health: '',
   attack: '',
   defense: ''
+})
+const uriRules = reactive({
+  tokenURI: [{ required: true, message: '请输入tokenURI', trigger: 'blur' }],
+  price: [{ required: true, message: '请输入价格', trigger: 'blur' }]
+})
+const uriForm = reactive({
+  tokenURI: '',
+  price: ''
 })
 const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.clearFiles()
@@ -72,18 +82,48 @@ async function onSubmit(formEl: FormInstance | undefined) {
     }
   })
   if (!isSubmit) return
+  isUriLoading.value = true
   const metadata = await client.store({
     name: ruleForm.name,
     description: ruleForm.desc,
     image: ruleForm.image[0].raw as File
   })
   if (!metadata) return
-  const uriData = await (await fetch(ipfsToHttps(metadata.url))).json()
-  await addNft(ipfsToHttps(metadata.url), '1')
+  // const uriData = await (await fetch(ipfsToHttps(metadata.url))).json()
+  // await addNft(ipfsToHttps(metadata.url), '1')
+  uriForm.tokenURI = ipfsToHttps(metadata.url).slice(8)
+  isUriLoading.value = false
+  isSwitch.value = true
+}
+async function onSubmitUri(formEl: FormInstance | undefined) {
+  if (!userInfo.value.accounts) return
+  if (!formEl) return
+  const isSubmit = await formEl.validate((valid) => {
+    if (valid) {
+      return true
+    } else {
+      return false
+    }
+  })
+  if (!isSubmit) return
+  try {
+    const ntfData = await (await fetch('https://' + uriForm.tokenURI)).json()
+    if (!ntfData?.name) {
+      ElMessage.error('tokenURI不正确')
+      return
+    }
+  } catch (error) {
+    ElMessage.error('tokenURI不正确')
+    console.log(error)
+    return
+  }
+  await addNft(uriForm.tokenURI, uriForm.price)
 }
 </script>
 <template>
-  <main class="flex justify-between max-w-7xl bg-white mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <main
+    class="grid sm:grid-cols-1 lg:grid-cols-2 max-w-7xl bg-white mx-auto px-4 py-8 sm:px-6 lg:px-8"
+  >
     <div>
       <div>
         <span>是否已经创建元数据？</span>
@@ -92,11 +132,11 @@ async function onSubmit(formEl: FormInstance | undefined) {
     </div>
     <el-form
       ref="formRef"
-      class="w-7/12"
       :model="ruleForm"
       :rules="rules"
       label-width="auto"
       label-position="top"
+      v-if="!isSwitch"
     >
       <el-form-item label="名称" prop="name">
         <el-input v-model="ruleForm.name" placeholder="我的NFT" />
@@ -125,26 +165,50 @@ async function onSubmit(formEl: FormInstance | undefined) {
             <upload-filled />
           </el-icon>
           <div class="el-upload__text">拖拽图片到这里或者 <em>点击上传</em></div>
-          <!-- <template #tip>
-            <div class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-          </template> -->
         </el-upload>
       </el-form-item>
       <div class="w-full flex justify-between">
         <el-form-item label="生命值">
-          <el-input v-model="ruleForm.health" placeholder="生命值" />
+          <el-input type="number" v-model="ruleForm.health" placeholder="生命值" />
         </el-form-item>
         <el-form-item label="攻击力">
-          <el-input v-model="ruleForm.attack" placeholder="攻击力" />
+          <el-input type="number" v-model="ruleForm.attack" placeholder="攻击力" />
         </el-form-item>
         <el-form-item label="防御力">
-          <el-input v-model="ruleForm.defense" placeholder="防御力" />
+          <el-input type="number" v-model="ruleForm.defense" placeholder="防御力" />
         </el-form-item>
       </div>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit(formRef)">创建</el-button>
-        <el-button>清空</el-button>
+        <div class="w-full flex justify-center">
+          <el-button type="primary" @click="onSubmit(formRef)">创建URI</el-button>
+          <el-button>清空</el-button>
+        </div>
+      </el-form-item>
+    </el-form>
+    <el-form
+      ref="uriFormRef"
+      :model="uriForm"
+      :rules="uriRules"
+      label-width="auto"
+      label-position="top"
+      v-else
+    >
+      <el-form-item label="tokenURI" prop="tokenURI">
+        <el-input v-model="uriForm.tokenURI" placeholder="nft的tokenURI">
+          <template #prepend>https://</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="定价" prop="price">
+        <el-input type="number" v-model="uriForm.price" placeholder="nft的定价">
+          <template #append>ETH</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item>
+        <div class="w-full flex justify-center">
+          <el-button type="primary" @click="onSubmitUri(uriFormRef)">创建NFT</el-button>
+          <el-button>清空</el-button>
+        </div>
       </el-form-item>
     </el-form>
   </main>

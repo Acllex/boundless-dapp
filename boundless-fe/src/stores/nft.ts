@@ -2,7 +2,7 @@ import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
 import { ethers } from 'ethers'
-const { contract, ethereum, provider } = await useWeb3Api()
+const { contract, ethereum } = await useWeb3Api()
 type NftItem = {
   tokenId: string
   name: string
