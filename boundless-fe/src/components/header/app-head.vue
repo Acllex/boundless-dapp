@@ -83,7 +83,7 @@ watch(
   <div class="min-w-full bg-white sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
       <el-menu :default-active="activeIndex" :router="true" mode="horizontal" :ellipsis="false">
-        <el-menu-item index="/"> Home </el-menu-item>
+        <el-menu-item class="hover:bg-white" index="/"> 市场 </el-menu-item>
         <el-menu-item index="/create"> 创造 </el-menu-item>
         <div class="flex-1"></div>
         <div class="flex items-center">
