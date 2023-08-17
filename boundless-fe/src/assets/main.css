@@ -1,11 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
   background-color: #fff !important;
 }
-
+.no-dialog-padding > .el-dialog__body {
+  padding: 0px !important;
+}
+.no-dialog-header > .el-dialog__header {
+  padding: 0px !important;
+}
+.no-dialog-bg {
+  background-color: transparent !important;
+}
+.bv-hidden {
+  backface-visibility: hidden;
+}
+.-rotate-y-180 {
+  transform: rotateY(-180deg);
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
 .icon {
   width: 1em;
   height: 1em;

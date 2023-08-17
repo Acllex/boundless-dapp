@@ -56,7 +56,7 @@ export const useNftStore = defineStore('nft', () => {
         .buyNft(tokenId, {
           value: ethers.parseEther(price).toString()
         })
-        .finally(() => {
+        .then(() => {
           nftList.value = nftList.value.filter((nft) => nft.tokenId !== tokenId)
         })
     } catch (error) {
