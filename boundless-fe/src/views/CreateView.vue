@@ -86,7 +86,12 @@ async function onSubmit(formEl: FormInstance | undefined) {
   const metadata = await client.store({
     name: ruleForm.name,
     description: ruleForm.desc,
-    image: ruleForm.image[0].raw as File
+    image: ruleForm.image[0].raw as File,
+    combat: {
+      health: ruleForm.health,
+      attack: ruleForm.attack,
+      defense: ruleForm.defense
+    }
   })
   if (!metadata) return
   // const uriData = await (await fetch(ipfsToHttps(metadata.url))).json()

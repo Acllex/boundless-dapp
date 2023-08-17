@@ -3,12 +3,19 @@ import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
 import { N, ethers } from 'ethers'
 const { contract, ethereum } = await useWeb3Api()
+type Combat = {
+  attack: string
+  defense: string
+  speed: string
+  health: string
+}
 type NftItem = {
   tokenId: string
   name: string
   description: string
   image: string
   price: string
+  combat?: Combat
 }
 
 export const useNftStore = defineStore('nft', () => {

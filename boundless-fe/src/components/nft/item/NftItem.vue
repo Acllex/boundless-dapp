@@ -13,6 +13,14 @@ defineProps({
     }
   }
 })
+type CombatMap = {
+  [k: string]: [string, string]
+}
+const combatMap: CombatMap = {
+  attack: ['danger', '攻击'],
+  defense: ['warning', '防御'],
+  health: ['success', '生命']
+}
 const isPreview = ref(false)
 const isFront = ref(false)
 const dialogWidth = ref('30%')
@@ -87,20 +95,16 @@ watch(isPreview, (val) => {
         <div class="w-full">
           <div class="text-base font-semibold">{{ itemInfo.name }} #{{ itemInfo.tokenId }}</div>
           <p class="line-clamp-2 text-gray-400">{{ itemInfo.description || '暂无介绍' }}</p>
-          <div class="mt-2">
+          <div v-if="itemInfo?.combat" class="mt-2">
             <el-text size="large" tag="b">战斗数值</el-text>
             <div class="grid grid-cols-3 mt-1">
-              <div class="text-center grid grid-rows-2">
-                <el-text tag="b">100</el-text>
-                <el-text type="danger">攻击</el-text>
-              </div>
-              <div class="text-center grid grid-rows-2">
-                <el-text tag="b">100</el-text>
-                <el-text type="warning">防御</el-text>
-              </div>
-              <div class="text-center grid grid-rows-2">
-                <el-text tag="b">100</el-text>
-                <el-text type="success">生命</el-text>
+              <div
+                v-for="(value, key) in itemInfo?.combat"
+                :key="key"
+                class="text-center grid grid-rows-2"
+              >
+                <el-text tag="b">{{ value }}</el-text>
+                <el-text :type="combatMap[key][0]">{{ combatMap[key][1] }}</el-text>
               </div>
             </div>
           </div>

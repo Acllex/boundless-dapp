@@ -97,10 +97,15 @@ watch(
                 <el-avatar class="mb-1.5" src="" />
               </template>
               <div>
-                <div class="text-sm text-gray-400 mb-1">
+                <div class="text-sm text-gray-400 mb-2">
                   {{ userInfo?.accounts.slice(0, 5) }}****{{ userInfo?.accounts.slice(-4) }}
                 </div>
-                <div class="text-sm text-black mb-1">我的NFT</div>
+                <div
+                  class="text-sm text-black mb-1 hover:underline"
+                  @click="router.push('/my-nfts')"
+                >
+                  我的NFT
+                </div>
               </div>
             </el-popover>
             <el-button v-else type="primary" size="small" @click="onLogin" round> 登录 </el-button>
