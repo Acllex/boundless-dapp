@@ -34,12 +34,14 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    List: typeof import('./src/components/nftCardList/list/list.vue')['default']
+    NftCard: typeof import('./src/components/nftCardList/item/nft-card.vue')['default']
     NftIcon: typeof import('./src/components/icon/nft-icon.vue')['default']
     NftItem: typeof import('./src/components/nft/item/NftItem.vue')['default']
     NftList: typeof import('./src/components/nft/list/NftList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SkeletonCard: typeof import('./src/components/skeletonCard/skeleton-card.vue')['default']
+    SkeletonCard: typeof import('./src/components/nft/skeletonCard/skeleton-card.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

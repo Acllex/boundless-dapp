@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import SkeletonCard from '@/components/skeletonCard/skeleton-card.vue'
+import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import NftItem from '@/components/nft/item/NftItem.vue'
 import { useNftStore } from '@/stores/nft'
 const nftStore = useNftStore()
@@ -13,12 +13,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="nftList.length" class="grid sm:grid-cols-1 gap-4 lg:grid-cols-4">
+  <div v-if="nftList.length" class="grid sm:grid-cols-2 gap-4 lg:grid-cols-4">
     <div v-for="(o, i) in nftList" :key="i">
       <NftItem :item-info="o" />
     </div>
   </div>
-  <div v-else class="grid sm:grid-cols-1 gap-4 lg:grid-cols-4">
+  <div v-else class="grid sm:grid-cols-2 gap-4 lg:grid-cols-4">
     <div v-for="i in 8" :key="i">
       <SkeletonCard />
     </div>

@@ -94,8 +94,6 @@ async function onSubmit(formEl: FormInstance | undefined) {
     }
   })
   if (!metadata) return
-  // const uriData = await (await fetch(ipfsToHttps(metadata.url))).json()
-  // await addNft(ipfsToHttps(metadata.url), '1')
   uriForm.tokenURI = ipfsToHttps(metadata.url).slice(8)
   isLoading.value = false
   isSwitch.value = true
