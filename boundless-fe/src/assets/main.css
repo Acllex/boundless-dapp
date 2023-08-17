@@ -5,3 +5,11 @@
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
   background-color: #fff !important;
 }
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}

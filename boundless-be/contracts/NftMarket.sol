@@ -55,7 +55,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
         _usedTokenURIs[tokenURI] = true;
         return newTokenId;
     }
-    // nft信息
+    // nft铸造信息
     function _createNftItem(uint tokenId, uint price) private {
         require(price > 0, "Price must be greater than 0");
         _nftItems[tokenId] = NftItem(tokenId, price, msg.sender, true);

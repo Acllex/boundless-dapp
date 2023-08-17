@@ -48,7 +48,7 @@ contract('NftMarket', (accounts) => {
     })
     describe("Buy Nft", () => {
         before(async () => {
-            await nftmarket.buyNft(1, {
+            await nftmarket.buyNft("1", {
                 from: accounts[1],
                 value: _nftPrice
             });

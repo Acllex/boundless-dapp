@@ -25,7 +25,7 @@ const formRef = ref<FormInstance>()
 const uriFormRef = ref<FormInstance>()
 const upload = ref<UploadInstance>()
 const isSwitch = ref(false)
-const isUriLoading = ref(false)
+const isLoading = ref(false)
 const rules = reactive({
   name: [
     { required: true, message: '请输入NFT名称', trigger: 'blur' },
@@ -82,7 +82,7 @@ async function onSubmit(formEl: FormInstance | undefined) {
     }
   })
   if (!isSubmit) return
-  isUriLoading.value = true
+  isLoading.value = true
   const metadata = await client.store({
     name: ruleForm.name,
     description: ruleForm.desc,
@@ -92,7 +92,7 @@ async function onSubmit(formEl: FormInstance | undefined) {
   // const uriData = await (await fetch(ipfsToHttps(metadata.url))).json()
   // await addNft(ipfsToHttps(metadata.url), '1')
   uriForm.tokenURI = ipfsToHttps(metadata.url).slice(8)
-  isUriLoading.value = false
+  isLoading.value = false
   isSwitch.value = true
 }
 async function onSubmitUri(formEl: FormInstance | undefined) {
@@ -106,6 +106,7 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
     }
   })
   if (!isSubmit) return
+  isLoading.value = true
   try {
     const ntfData = await (await fetch('https://' + uriForm.tokenURI)).json()
     if (!ntfData?.name) {
@@ -117,12 +118,14 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
     console.log(error)
     return
   }
-  await addNft(uriForm.tokenURI, uriForm.price)
+  await addNft(`https://${uriForm.tokenURI}`, uriForm.price)
+  isLoading.value = false
 }
 </script>
 <template>
   <main
     class="grid sm:grid-cols-1 lg:grid-cols-2 max-w-7xl bg-white mx-auto px-4 py-8 sm:px-6 lg:px-8"
+    v-loading="isLoading"
   >
     <div>
       <div>

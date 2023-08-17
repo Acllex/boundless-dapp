@@ -1,10 +1,15 @@
 <script lang="ts" setup>
+import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import SkeletonCard from '@/components/skeletonCard/skeleton-card.vue'
 import NftItem from '@/components/nft/item/NftItem.vue'
 import { useNftStore } from '@/stores/nft'
 const nftStore = useNftStore()
 const { nftList } = storeToRefs(nftStore)
+const { getNftList } = nftStore
+onMounted(() => {
+  getNftList()
+})
 </script>
 
 <template>
