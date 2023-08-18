@@ -13,13 +13,19 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
+    ElForm: typeof import('element-plus/es')['ElForm']
+    ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElInput: typeof import('element-plus/es')['ElInput']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
@@ -34,5 +40,8 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SkeletonCard: typeof import('./src/components/nft/skeletonCard/skeleton-card.vue')['default']
     Vue3Jazzicon: typeof import('./src/components/jazzicon/vue3-jazzicon.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

@@ -89,7 +89,7 @@ const downloadMetamask = () => {
         <el-menu-item index="/"> 市场 </el-menu-item>
         <el-menu-item index="/create"> 创造 </el-menu-item>
         <div class="flex-1"></div>
-        <div class="flex items-center">
+        <div class="sm:flex items-center hidden">
           <el-tag class="font-bold"
             >• {{ networkInfo.isLoading === true ? '加载中...' : networkInfo.name }}</el-tag
           >

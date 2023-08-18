@@ -5,7 +5,7 @@ import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import NftItem from '@/components/nft/item/NftItem.vue'
 import { useNftStore } from '@/stores/nft'
 const nftStore = useNftStore()
-const { nftList } = storeToRefs(nftStore)
+const { nftList, nftLoading } = storeToRefs(nftStore)
 const { getNftList } = nftStore
 onMounted(() => {
   getNftList()
@@ -18,10 +18,9 @@ onMounted(() => {
       <NftItem :item-info="o" />
     </div>
   </div>
-  <div v-else class="grid sm:grid-cols-2 gap-4 lg:grid-cols-4">
-    <div v-for="i in 8" :key="i">
-      <SkeletonCard />
-    </div>
+  <div v-else-if="nftLoading" class="grid sm:grid-cols-2 gap-4 lg:grid-cols-4">
+    <SkeletonCard v-for="i in 8" :key="i" />
   </div>
+  <el-empty v-else-if="!nftLoading && !nftList.length" description="您还没有NFT收藏" />
 </template>
 @/stores/nftList
