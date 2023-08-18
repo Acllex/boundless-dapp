@@ -1,6 +1,6 @@
 import { ethers, Contract } from 'ethers'
 import { abi, networks } from '@/content/NftMarket.json'
-import type { NftMarketContract } from '@/type/nftMarketContract'
+import type { NftMarketContract } from '@/types/nftMarketContract'
 const NETWORK = {
   '1691497049269': 'a'
 }

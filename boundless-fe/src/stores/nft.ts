@@ -19,19 +19,23 @@ type NftItem = {
 }
 
 export const useNftStore = defineStore('nft', () => {
+  const nftLoading = ref(false)
   const nftInfo = ref({ name: '', symbol: '' })
   // nft的销售列表
   const nftList = ref([] as NftItem[])
+  // nft个人列表
+  const nftMyList = ref([] as NftItem[])
   // 获取nft销售列表
   async function getNftList() {
     if (!contract) return
     nftList.value = []
+    nftLoading.value = true
     const name = await contract.name()
     const symbol = await contract.symbol()
     const nftLists = await contract.getAllNftsOnSale()
-    console.log(nftLists, 'nftLists')
 
-    nftLists.forEach(async (nft) => {
+    for (let i = 0; i < nftLists.length; i++) {
+      const nft = nftLists[i]
       const uri = await contract.tokenURI(nft.tokenId.toString())
       const nftJson = await (await fetch(uri)).json()
       nftList.value.push({
@@ -39,8 +43,32 @@ export const useNftStore = defineStore('nft', () => {
         price: ethers.formatEther(nft.price.toString()),
         ...nftJson
       })
-    })
+    }
+
     nftInfo.value = { name, symbol }
+    nftLoading.value = false
+  }
+  // 获取nft个人列表
+  async function getNftMyList() {
+    if (!contract) return
+    nftLoading.value = true
+    nftMyList.value = []
+    try {
+      const nftLists = await contract.getOwnedNfts()
+      for (let i = 0; i < nftLists.length; i++) {
+        const nft = nftLists[i]
+        const uri = await contract.tokenURI(nft.tokenId.toString())
+        const nftJson = await (await fetch(uri)).json()
+        nftMyList.value.push({
+          tokenId: nft.tokenId.toString(),
+          price: ethers.formatEther(nft.price.toString()),
+          ...nftJson
+        })
+      }
+    } catch (error) {
+      console.log(error, 'error')
+    }
+    nftLoading.value = false
   }
   // 添加nft
   async function addNft(uri: string, price: string) {
@@ -54,9 +82,9 @@ export const useNftStore = defineStore('nft', () => {
       console.log(error, 'error')
     }
   }
+  // 购买nft
   async function buyNft(tokenId: string, price: string) {
     if (!contract) return
-    console.log(tokenId, 'tokenId')
 
     try {
       await contract
@@ -70,5 +98,5 @@ export const useNftStore = defineStore('nft', () => {
       console.log(error, 'error')
     }
   }
-  return { nftInfo, nftList, getNftList, addNft, buyNft }
+  return { nftLoading, nftInfo, nftList, nftMyList, getNftList, addNft, buyNft, getNftMyList }
 })

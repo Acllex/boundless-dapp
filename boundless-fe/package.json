@@ -16,6 +16,7 @@
   "dependencies": {
     "element-plus": "^2.3.8",
     "ethers": "^6.6.6",
+    "mersenne-twister": "^1.1.0",
     "nft.storage": "^7.1.1",
     "pinia": "^2.1.4",
     "pinia-plugin-persistedstate": "^3.2.0",

@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
 import { useWeb3Api } from '@/utils'
 import { ElMessage } from 'element-plus'
+import Vue3Jazzicon from '@/components/jazzicon/vue3-jazzicon.vue'
 const { provider, ethereum } = await useWeb3Api()
 const NETWORKS: { [k: number]: string } = {
   1: '以太坊主网',
@@ -77,6 +78,9 @@ watch(
     activeIndex.value = n
   }
 )
+const downloadMetamask = () => {
+  window.open('https://metamask.io/download/', '_blank')
+}
 </script>
 <template>
   <div class="min-w-full bg-white sm:px-6 lg:px-8">
@@ -94,21 +98,38 @@ watch(
           <div class="h-full box-border">
             <el-popover v-if="userInfo?.accounts" placement="bottom-end" trigger="click">
               <template #reference>
-                <el-avatar class="mb-1.5" src="" />
+                <el-avatar class="mb-1.5 relative">
+                  <Vue3Jazzicon
+                    class="absolute bottom-0"
+                    :diameter="40"
+                    :address="userInfo?.accounts"
+                  />
+                </el-avatar>
               </template>
               <div>
                 <div class="text-sm text-gray-400 mb-2">
                   {{ userInfo?.accounts.slice(0, 5) }}****{{ userInfo?.accounts.slice(-4) }}
                 </div>
                 <div
-                  class="text-sm text-black mb-1 hover:underline"
+                  class="text-sm text-black mb-1 hover:underline cursor-pointer"
                   @click="router.push('/my-nfts')"
                 >
                   我的NFT
                 </div>
               </div>
             </el-popover>
-            <el-button v-else type="primary" size="small" @click="onLogin" round> 登录 </el-button>
+            <el-button
+              v-else-if="ethereum && provider"
+              type="primary"
+              size="small"
+              @click="onLogin"
+              round
+            >
+              登录
+            </el-button>
+            <el-button v-else type="primary" size="small" @click="downloadMetamask" round>
+              下载钱包
+            </el-button>
           </div>
         </el-menu-item>
       </el-menu>
