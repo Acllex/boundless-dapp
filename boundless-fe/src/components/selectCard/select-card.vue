@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ipfsToHttps } from '@/utils'
-import { ref, watch, onMounted, onUpdated } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 type CombatMap = {
   [k: string]: [string, string]
 }
