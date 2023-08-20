@@ -38,6 +38,7 @@ declare module 'vue' {
     NftList: typeof import('./src/components/nft/list/NftList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectCard: typeof import('./src/components/selectCard/select-card.vue')['default']
     SkeletonCard: typeof import('./src/components/nft/skeletonCard/skeleton-card.vue')['default']
     Vue3Jazzicon: typeof import('./src/components/jazzicon/vue3-jazzicon.vue')['default']
   }

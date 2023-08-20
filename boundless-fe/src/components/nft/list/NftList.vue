@@ -23,4 +23,3 @@ onMounted(() => {
   </div>
   <el-empty v-else-if="!nftLoading && !nftList.length" description="您还没有NFT收藏" />
 </template>
-@/stores/nftList

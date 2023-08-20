@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { NFTStorage } from 'nft.storage'
 import { UploadFilled } from '@element-plus/icons-vue'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { genFileId, ElMessage } from 'element-plus'
 import type {
@@ -15,10 +15,26 @@ import { ipfsToHttps } from '@/utils'
 import { useUsersStore } from '@/stores/users'
 import { useNftStore } from '@/stores/nft'
 import { fetch } from 'nft.storage/src/platform.js'
+import { useRouter } from 'vue-router'
 const usersStore = useUsersStore()
 const nftStore = useNftStore()
 const { userInfo } = storeToRefs(usersStore)
-const { addNft } = nftStore
+const { addNft, getTokenURI, placeNftOnSale } = nftStore
+const router = useRouter()
+const currentRoute = router.currentRoute
+console.log(currentRoute.value.query)
+
+onMounted(async () => {
+  if (!userInfo.value.accounts) {
+    ElMessage.error('请先登录')
+    router.push('/login')
+  }
+  if (currentRoute.value.query?.id) {
+    isSwitch.value = true
+    uriForm.tokenURI = (await getTokenURI(currentRoute.value.query.id as string)) as string
+    uriForm.tokenURI = uriForm.tokenURI.slice(8)
+  }
+})
 
 const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_TOKEN })
 const formRef = ref<FormInstance>()
@@ -121,7 +137,11 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
     console.log(error)
     return
   }
-  await addNft(`https://${uriForm.tokenURI}`, uriForm.price)
+  if (currentRoute.value.query?.id) {
+    await placeNftOnSale(currentRoute.value.query.id as string, uriForm.price)
+  } else {
+    await addNft(`https://${uriForm.tokenURI}`, uriForm.price)
+  }
   isLoading.value = false
 }
 </script>
@@ -212,7 +232,9 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
       </el-form-item>
       <el-form-item>
         <div class="w-full flex justify-center">
-          <el-button type="primary" @click="onSubmitUri(uriFormRef)">创建NFT</el-button>
+          <el-button type="primary" @click="onSubmitUri(uriFormRef)"
+            >{{ currentRoute.query.id ? '挂卖' : '创建' }}NFT</el-button
+          >
           <el-button>清空</el-button>
         </div>
       </el-form-item>

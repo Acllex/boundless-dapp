@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ipfsToHttps } from '@/utils'
-import { onMounted, ref, watch, nextTick } from 'vue'
+import { onMounted, ref, onUpdated } from 'vue'
+import { useRouter } from 'vue-router'
 import NftCard from '../item/nft-card.vue'
 import { storeToRefs } from 'pinia'
 import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import { useNftStore } from '@/stores/nft'
+import SelectCard from '@/components/selectCard/select-card.vue'
 type ItemInfo = {
   tokenId: string
   image: string
@@ -17,6 +18,7 @@ type ItemInfo = {
     health: string
   }
 }
+const router = useRouter()
 const nftStore = useNftStore()
 const { nftMyList, nftLoading } = storeToRefs(nftStore)
 const { getNftMyList } = nftStore
@@ -29,20 +31,20 @@ const itemInfo = ref({
 } as ItemInfo)
 onMounted(() => {
   getNftMyList()
-  nextTick(() => {
-    console.log(nftMyList.value)
-  })
-  console.log(nftMyList.value)
 })
-watch(nftMyList.value, (newVal) => {
-  if (newVal.length) {
-    console.log(newVal[0])
-
-    itemInfo.value = newVal[0]
-  }
+onUpdated(() => {
+  itemInfo.value = nftMyList.value[0]
 })
 const getCardInfo = (info: ItemInfo) => {
   itemInfo.value = info
+}
+const sellNft = () => {
+  router.push({
+    path: '/create',
+    query: {
+      id: itemInfo.value.tokenId
+    }
+  })
 }
 </script>
 <template>
@@ -62,28 +64,10 @@ const getCardInfo = (info: ItemInfo) => {
     </div>
     <div class="lg:px-6 sm:block hidden">
       <el-card shadow="hover" :body-style="{ padding: '0px' }">
-        <div class="w-full h-0 pb-[100%] relative">
-          <img
-            class="w-full h-full absolute top-0 left-0 object-scale-down"
-            :src="ipfsToHttps(itemInfo.image)"
-            :alt="`${itemInfo.name}#${itemInfo.tokenId}`"
-          />
-        </div>
-        <div class="h-0 pb-[55%] relative">
-          <div class="p-[14px]">
-            <div class="text-base font-semibold">{{ itemInfo.name }} #{{ itemInfo.tokenId }}</div>
-            <div class="text-base font-bold flex items-center text-blue-500">
-              <span class="pr-1">{{ itemInfo.price }}</span>
-              <NftIcon href="#icon-ETH" />
-            </div>
-            <p class="line-clamp-2 text-gray-400">{{ itemInfo.description || '暂无介绍' }}</p>
-            <div class="absolute bottom-2">
-              <!-- <el-button type="primary" @click="onBuy(itemInfo.tokenId, itemInfo.price)"
-                >购买</el-button
-              >
-              <el-button @click="onPreview">查看</el-button> -->
-            </div>
-          </div>
+        <SelectCard :item-info="itemInfo" />
+        <div class="p-3 flex justify-center">
+          <el-button type="primary">下载图片</el-button>
+          <el-button @click="sellNft">卖出NFT</el-button>
         </div>
       </el-card>
     </div>

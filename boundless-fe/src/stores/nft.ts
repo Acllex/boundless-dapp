@@ -1,7 +1,7 @@
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWeb3Api } from '@/utils'
-import { N, ethers } from 'ethers'
+import { ethers } from 'ethers'
 const { contract, ethereum } = await useWeb3Api()
 type Combat = {
   attack: string
@@ -98,5 +98,37 @@ export const useNftStore = defineStore('nft', () => {
       console.log(error, 'error')
     }
   }
-  return { nftLoading, nftInfo, nftList, nftMyList, getNftList, addNft, buyNft, getNftMyList }
+  // 挂卖nft
+  async function placeNftOnSale(tokenId: string, price: string) {
+    if (!contract) return
+    try {
+      await contract.placeNftOnSale(tokenId, ethers.parseEther(price).toString(), {
+        value: ethers.parseEther((0.025).toString())
+      })
+    } catch (error) {
+      console.log(error, 'error')
+    }
+  }
+  // 获取TokenURI
+  async function getTokenURI(tokenId: string) {
+    if (!contract) return
+    try {
+      const uri = await contract.tokenURI(tokenId)
+      return uri
+    } catch (error) {
+      console.log(error, 'error')
+    }
+  }
+  return {
+    nftLoading,
+    nftInfo,
+    nftList,
+    nftMyList,
+    getNftList,
+    addNft,
+    buyNft,
+    getNftMyList,
+    placeNftOnSale,
+    getTokenURI
+  }
 })
