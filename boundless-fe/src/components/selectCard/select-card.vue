@@ -71,6 +71,9 @@ watch(
           </div>
         </div>
       </div>
+      <footer>
+        <slot name="footer"></slot>
+      </footer>
     </div>
   </div>
 </template>

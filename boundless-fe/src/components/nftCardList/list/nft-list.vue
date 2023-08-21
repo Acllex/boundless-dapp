@@ -31,6 +31,8 @@ const itemInfo = ref({
   price: '',
   description: ''
 } as ItemInfo)
+const isPreview = ref(false)
+
 onMounted(() => {
   getNftMyList()
 })
@@ -39,6 +41,7 @@ onUpdated(() => {
 })
 const getCardInfo = (info: ItemInfo) => {
   itemInfo.value = info
+  isPreview.value = true
 }
 const sellNft = () => {
   router.push({
@@ -67,7 +70,7 @@ const cancelNft = () => {
       </div>
       <el-empty v-else-if="!nftLoading && !nftMyList.length" description="您还没有NFT收藏" />
     </div>
-    <div class="lg:px-6 sm:block hidden">
+    <div v-if="itemInfo" class="lg:px-6 sm:block hidden">
       <el-card shadow="hover" :body-style="{ padding: '0px' }">
         <SelectCard :item-info="itemInfo" />
         <div class="p-3 flex justify-center">
@@ -78,5 +81,25 @@ const cancelNft = () => {
         </div>
       </el-card>
     </div>
+  </div>
+  <div class="sm:hidden">
+    <el-dialog
+      class="no-dialog-padding no-dialog-header"
+      v-model="isPreview"
+      width="90%"
+      align-center
+      destroy-on-close
+    >
+      <SelectCard :item-info="itemInfo">
+        <template #footer>
+          <div class="flex justify-center mt-2">
+            <el-button :disabled="itemInfo?.isListed" type="primary" @click="sellNft" link
+              >挂卖NFT</el-button
+            >
+            <el-button :disabled="!itemInfo?.isListed" @click="cancelNft" link>取消挂卖</el-button>
+          </div>
+        </template>
+      </SelectCard>
+    </el-dialog>
   </div>
 </template>
