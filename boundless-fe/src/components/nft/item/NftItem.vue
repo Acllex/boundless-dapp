@@ -20,10 +20,14 @@ const dialogWidth = ref('30%')
 const nftStore = useNftStore()
 const usersStore = useUsersStore()
 const { userInfo } = storeToRefs(usersStore)
+const buyLoading = ref(false)
 
 const { buyNft } = nftStore
 const onBuy = async (tokenId: string, price: string) => {
-  await buyNft(tokenId, price)
+  buyLoading.value = true
+  await buyNft(tokenId, price).finally(() => {
+    buyLoading.value = false
+  })
 }
 const onPreview = () => {
   dialogWidth.value = document.body.offsetWidth > 1024 ? '30%' : '90%'
@@ -53,6 +57,7 @@ const onPreview = () => {
             type="primary"
             :disabled="itemInfo.owner == userInfo.accounts"
             @click="onBuy(itemInfo.tokenId, itemInfo.price)"
+            :loading="buyLoading"
             >购买</el-button
           >
           <el-button @click="onPreview">查看</el-button>
