@@ -43,14 +43,18 @@ const currentRoute = router.currentRoute
 const onLogin = () => {
   getUserInfo()
 }
-const onAccountChange = async (accounts: string[]) => {
-  if (accounts.length === 0) {
+const onAccountChange = async () => {
+  if (!provider) return
+  const signer = await provider.getSigner()
+  const account = await signer.getAddress()
+  if (account.length === 0) {
     userInfo.value = { isLoading: false, accounts: '' }
     return
   }
-  if (accounts[0] === userInfo.value.accounts) return
+  if (account === userInfo.value.accounts) return
+
+  userInfo.value = { isLoading: false, accounts: account }
   ElMessage.success('账户切换成功')
-  userInfo.value = { isLoading: false, accounts: accounts[0] }
 }
 const onNetworkChange = (chainId: string) => {
   networkInfo.value = { isLoading: false, name: NETWORKS[Number(chainId)] }

@@ -31,7 +31,6 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
-    Jazzicon: typeof import('./src/components/jazzicon/jazzicon.vue')['default']
     NftCard: typeof import('./src/components/nftCardList/item/nft-card.vue')['default']
     NftIcon: typeof import('./src/components/icon/nft-icon.vue')['default']
     NftItem: typeof import('./src/components/nft/item/NftItem.vue')['default']

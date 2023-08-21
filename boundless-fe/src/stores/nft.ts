@@ -11,7 +11,9 @@ type Combat = {
 }
 type NftItem = {
   tokenId: string
+  owner: string
   name: string
+  isListed: boolean
   description: string
   image: string
   price: string
@@ -20,7 +22,7 @@ type NftItem = {
 
 export const useNftStore = defineStore('nft', () => {
   const nftLoading = ref(false)
-  const nftInfo = ref({ name: '', symbol: '' })
+  // const nftInfo = ref({ name: '', symbol: '' })
   // nft的销售列表
   const nftList = ref([] as NftItem[])
   // nft个人列表
@@ -30,22 +32,24 @@ export const useNftStore = defineStore('nft', () => {
     if (!contract) return
     nftList.value = []
     nftLoading.value = true
-    const name = await contract.name()
-    const symbol = await contract.symbol()
+    // const name = await contract.name()
+    // const symbol = await contract.symbol()
     const nftLists = await contract.getAllNftsOnSale()
 
     for (let i = 0; i < nftLists.length; i++) {
       const nft = nftLists[i]
       const uri = await contract.tokenURI(nft.tokenId.toString())
+      const owner = await contract.ownerOf(nft.tokenId.toString())
       const nftJson = await (await fetch(uri)).json()
       nftList.value.push({
         tokenId: nft.tokenId.toString(),
+        owner,
         price: ethers.formatEther(nft.price.toString()),
         ...nftJson
       })
     }
 
-    nftInfo.value = { name, symbol }
+    // nftInfo.value = { name, symbol }
     nftLoading.value = false
   }
   // 获取nft个人列表
@@ -61,6 +65,7 @@ export const useNftStore = defineStore('nft', () => {
         const nftJson = await (await fetch(uri)).json()
         nftMyList.value.push({
           tokenId: nft.tokenId.toString(),
+          isListed: nft.isListed,
           price: ethers.formatEther(nft.price.toString()),
           ...nftJson
         })
@@ -109,6 +114,15 @@ export const useNftStore = defineStore('nft', () => {
       console.log(error, 'error')
     }
   }
+  // 取消挂卖nft
+  async function cancelNftOnSale(tokenId: string) {
+    if (!contract) return
+    try {
+      await contract.cancelNftOnSale(tokenId)
+    } catch (error) {
+      console.log(error, 'error')
+    }
+  }
   // 获取TokenURI
   async function getTokenURI(tokenId: string) {
     if (!contract) return
@@ -121,7 +135,7 @@ export const useNftStore = defineStore('nft', () => {
   }
   return {
     nftLoading,
-    nftInfo,
+    // nftInfo,
     nftList,
     nftMyList,
     getNftList,
@@ -129,6 +143,7 @@ export const useNftStore = defineStore('nft', () => {
     buyNft,
     getNftMyList,
     placeNftOnSale,
+    cancelNftOnSale,
     getTokenURI
   }
 })

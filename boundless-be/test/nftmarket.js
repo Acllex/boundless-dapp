@@ -99,7 +99,7 @@ contract('NftMarket', (accounts) => {
             assert.equal(ownedNftList.length, 1, 'accounts[0]的Nft数量不正确');
         })
     })
-    describe("token transfers to new owner", () => {
+    describe("转移NFT", () => {
         before(async () => {
             await nftmarket.transferFrom(accounts[0], accounts[1], 2);
         })
@@ -143,10 +143,21 @@ contract('NftMarket', (accounts) => {
             const nftList = await nftmarket.getAllNftsOnSale();
             assert.equal(nftList.length, 2, '售卖列表中的Nft数量不正确');
         })
-        it("设置一个新的挂牌价", async () => {
+        it("设置一个新的挂牌手续费", async () => {
             await nftmarket.setListingPrice(ethers.parseEther('1').toString(), { from: accounts[0] });
             const listingPrice = await nftmarket.listingPrice();
-            assert.equal(listingPrice.toString(), ethers.parseEther('1').toString(), '设置挂牌价失败');
+            assert.equal(listingPrice.toString(), ethers.parseEther('1').toString(), '设置挂牌手续费失败');
+        })
+    })
+    describe("从售卖列表中移除Nft", () => {
+        before(async () => {
+            await nftmarket.cancelNftOnSale(1, {
+                from: accounts[1]
+            });
+        })
+        it("Nft应该不在售卖列表中", async () => {
+            const nftList = await nftmarket.getAllNftsOnSale();
+            assert.equal(nftList.length, 1, '售卖列表中的Nft数量不正确');
         })
     })
 })

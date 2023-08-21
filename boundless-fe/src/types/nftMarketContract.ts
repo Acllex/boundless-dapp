@@ -94,6 +94,7 @@ export type NftMarketContractMethodNames =
   | 'getAllNftsOnSale'
   | 'buyNft'
   | 'placeNftOnSale'
+  | 'cancelNftOnSale'
   | 'getNftItem'
   | 'listedItemsCount'
   | 'tokenURIExists'
@@ -418,6 +419,17 @@ export interface NftMarketContract {
   placeNftOnSale(
     tokenId: BigNumberish,
     price: BigNumberish,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  cancelNftOnSale(
+    tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>
   /**

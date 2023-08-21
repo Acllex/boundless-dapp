@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { ipfsToHttps } from '@/utils'
 import { useNftStore } from '@/stores/nft'
+import { useUsersStore } from '@/stores/users'
 import NftIcon from '@/components/icon/nft-icon.vue'
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import SelectCard from '@/components/selectCard/select-card.vue'
 defineProps({
@@ -13,10 +15,12 @@ defineProps({
     }
   }
 })
-
 const isPreview = ref(false)
 const dialogWidth = ref('30%')
 const nftStore = useNftStore()
+const usersStore = useUsersStore()
+const { userInfo } = storeToRefs(usersStore)
+
 const { buyNft } = nftStore
 const onBuy = async (tokenId: string, price: string) => {
   await buyNft(tokenId, price)
@@ -45,7 +49,10 @@ const onPreview = () => {
         </div>
         <p class="line-clamp-2 text-gray-400">{{ itemInfo.description || '暂无介绍' }}</p>
         <div class="absolute bottom-2">
-          <el-button type="primary" @click="onBuy(itemInfo.tokenId, itemInfo.price)"
+          <el-button
+            type="primary"
+            :disabled="itemInfo.owner == userInfo.accounts"
+            @click="onBuy(itemInfo.tokenId, itemInfo.price)"
             >购买</el-button
           >
           <el-button @click="onPreview">查看</el-button>

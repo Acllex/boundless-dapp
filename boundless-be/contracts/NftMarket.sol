@@ -132,6 +132,13 @@ contract NftMarket is ERC721URIStorage, Ownable {
         _nftItems[tokenId].price = price;
         _listedItems.increment();
     }
+    // 取消出售NFT
+    function cancelNftOnSale(uint tokenId) public {
+        require(msg.sender == ERC721.ownerOf(tokenId), "You are not the owner of this NFT");
+        require(_nftItems[tokenId].isListed == true, "This NFT is not listed");
+        _nftItems[tokenId].isListed = false;
+        _listedItems.decrement();
+    }
 
     // 获取指定的NFT
     function getNftItem(uint tokenId) public view returns (NftItem memory) {

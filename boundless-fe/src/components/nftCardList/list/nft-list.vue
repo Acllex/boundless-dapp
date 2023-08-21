@@ -10,6 +10,7 @@ type ItemInfo = {
   tokenId: string
   image: string
   name: string
+  isListed: boolean
   price: string
   description: string
   combat?: {
@@ -21,10 +22,11 @@ type ItemInfo = {
 const router = useRouter()
 const nftStore = useNftStore()
 const { nftMyList, nftLoading } = storeToRefs(nftStore)
-const { getNftMyList } = nftStore
+const { getNftMyList, cancelNftOnSale } = nftStore
 const itemInfo = ref({
   tokenId: '',
   image: '',
+  isListed: false,
   name: '',
   price: '',
   description: ''
@@ -46,6 +48,9 @@ const sellNft = () => {
     }
   })
 }
+const cancelNft = () => {
+  cancelNftOnSale(itemInfo.value.tokenId)
+}
 </script>
 <template>
   <div class="grid sm:grid-cols-3 grid-cols-2">
@@ -66,8 +71,10 @@ const sellNft = () => {
       <el-card shadow="hover" :body-style="{ padding: '0px' }">
         <SelectCard :item-info="itemInfo" />
         <div class="p-3 flex justify-center">
-          <el-button type="primary">下载图片</el-button>
-          <el-button @click="sellNft">卖出NFT</el-button>
+          <el-button :disabled="itemInfo?.isListed" type="primary" @click="sellNft"
+            >挂卖NFT</el-button
+          >
+          <el-button :disabled="!itemInfo?.isListed" @click="cancelNft">取消挂卖</el-button>
         </div>
       </el-card>
     </div>

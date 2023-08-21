@@ -11,7 +11,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "genContractType": "abi-types-generator './public/NftMarket.json' --output='./src/type' --name=nftMarketContract --provider=ethers_v5"
+    "genContractType": "abi-types-generator './src/content/NftMarket.json' --output='./src/types' --name=nftMarketContract --provider=ethers_v5"
   },
   "dependencies": {
     "element-plus": "^2.3.8",
