@@ -20,7 +20,7 @@ export async function useWeb3Api() {
     return { ethereum: undefined, provider: null, contract: null }
   }
   const contract = new ethers.Contract(
-    networks[keys[keys.length - 1]]['address'],
+    networks[keys[0]]['address'],
     abi,
     provider
   ) as unknown as Contract

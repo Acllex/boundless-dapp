@@ -1,4 +1,6 @@
 const keys = require("./keys.json");
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+
 module.exports = {
 
   networks: {
@@ -8,9 +10,12 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
 
-    celo: {
+    alfajores: {
       provider: () => new HDWalletProvider(keys.PRIVATE_KEY, `https://celo-alfajores.infura.io/v3/${keys.INFURA_PROJECT_ID}`),
-      network_id: 44787,       // celo's id
+      network_id: 44787,
+      gas: 20000000,
+      timeoutBlocks: 200,
+      networkCheckTimeout: 1000000,
     }
   },
 
