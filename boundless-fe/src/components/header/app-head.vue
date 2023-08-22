@@ -32,7 +32,8 @@ const NETWORKS: { [k: number]: string } = {
   1337: 'Localhost 8545',
   59144: 'Linea Mainnet',
   11155111: 'Sepolia测试网络',
-  59140: 'Linea Testnet'
+  59140: 'Linea Testnet',
+  44787: 'Alfajores测试网'
 }
 const usersStore = useUsersStore()
 const { userInfo, networkInfo } = storeToRefs(usersStore)
