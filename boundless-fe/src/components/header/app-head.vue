@@ -45,15 +45,7 @@ const onLogin = () => {
 }
 const onAccountChange = async () => {
   if (!provider) return
-  const signer = await provider.getSigner()
-  const account = await signer.getAddress()
-  if (account.length === 0) {
-    userInfo.value = { isLoading: false, accounts: '' }
-    return
-  }
-  if (account === userInfo.value.accounts) return
-
-  userInfo.value = { isLoading: false, accounts: account }
+  getUserInfo()
   ElMessage.success('账户切换成功')
 }
 const onNetworkChange = (chainId: string) => {

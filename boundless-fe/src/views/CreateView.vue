@@ -22,7 +22,6 @@ const { userInfo } = storeToRefs(usersStore)
 const { addNft, getTokenURI, placeNftOnSale } = nftStore
 const router = useRouter()
 const currentRoute = router.currentRoute
-console.log(currentRoute.value.query)
 
 onMounted(async () => {
   if (!userInfo.value.accounts) {
@@ -139,10 +138,17 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
   }
   if (currentRoute.value.query?.id) {
     await placeNftOnSale(currentRoute.value.query.id as string, uriForm.price)
+    isLoading.value = false
+    ElMessage.success('挂卖成功')
   } else {
-    await addNft(`https://${uriForm.tokenURI}`, uriForm.price)
+    const res = await addNft(`https://${uriForm.tokenURI}`, uriForm.price)
+    if (res) {
+      setTimeout(() => {
+        isLoading.value = false
+        ElMessage.success('创建成功')
+      }, 1000)
+    }
   }
-  isLoading.value = false
 }
 </script>
 <template>

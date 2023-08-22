@@ -1,3 +1,4 @@
+const keys = require("./keys.json");
 module.exports = {
 
   networks: {
@@ -6,12 +7,11 @@ module.exports = {
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
     },
-    //
-    // goerli: {
-    //   provider: () => new HDWalletProvider(mnemonic, `https://goerli.infura.io/v3/${infuraProjectId}`),
-    //   network_id: 5,       // Goerli's id
-    //   chain_id: 5
-    // }
+
+    celo: {
+      provider: () => new HDWalletProvider(keys.PRIVATE_KEY, `https://celo-alfajores.infura.io/v3/${keys.INFURA_PROJECT_ID}`),
+      network_id: 44787,       // celo's id
+    }
   },
 
   // Set default mocha options here, use special reporters etc.

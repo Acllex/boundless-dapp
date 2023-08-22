@@ -37,9 +37,9 @@ contract NftMarket is ERC721URIStorage, Ownable {
         listingPrice = price;
     }
     // 销毁NFT
-    function burnTokenId(uint tokenId) public {
-        _burn(tokenId);
-    }
+    // function burnTokenId(uint tokenId) public {
+    //     _burn(tokenId);
+    // }
     // 铸造NFT
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
         require(!tokenURIExists(tokenURI), "This token URI already exists");
