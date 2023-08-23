@@ -49,28 +49,28 @@ export const useNftStore = defineStore('nft', () => {
     if (!contract) return
     nftList.value = []
     nftLoading.value = true
-    // const name = await contract.name()
-    // const symbol = await contract.symbol()
+    const name = await contract.name()
+    const symbol = await contract.symbol()
     try {
       const nftLists = await contract.getAllNftsOnSale()
-
+      const nfts = [] as NftItem[]
       for (let i = 0; i < nftLists.length; i++) {
         const nft = nftLists[i]
         const uri = await contract.tokenURI(nft.tokenId.toString())
         const owner = await contract.ownerOf(nft.tokenId.toString())
         const nftJson = await (await fetch(uri)).json()
-        nftList.value.push({
+        nfts.push({
           tokenId: nft.tokenId.toString(),
           owner,
           price: ethers.formatEther(nft.price.toString()),
           ...nftJson
         })
       }
+      nftList.value = nfts
     } catch (error) {
       console.log(error, 'error')
       nftMessage.value = '当前区块链没有Boundless NFT合约,请切换区块链'
     }
-
     // nftInfo.value = { name, symbol }
     nftLoading.value = false
   }
