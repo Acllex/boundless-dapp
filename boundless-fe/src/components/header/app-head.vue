@@ -63,7 +63,8 @@ onMounted(async () => {
   // 监听网络变化
   const { chainId } = await provider.getNetwork()
   if (Number(chainId) !== 44787) {
-    changeChain()
+    const res = await changeChain()
+    ElMessage.info(res)
   }
   networkInfo.value = { isLoading: false, name: NETWORKS[Number(chainId)] }
   ethereum.on('chainChanged', onNetworkChange)

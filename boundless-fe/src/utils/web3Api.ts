@@ -43,6 +43,7 @@ export async function changeChain() {
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: '0x' + 'aef3' }]
     })
+    return '切换成功！'
   } catch (error: any) {
     if (error.code === 4902) {
       try {
@@ -63,11 +64,14 @@ export async function changeChain() {
             }
           ]
         })
-      } catch (error) {
+        return '添加成功！'
+      } catch (error: any) {
         console.log(error, 'error')
+        return error.message
       }
     } else {
       console.log(error, 'error')
+      return error.message
     }
   }
 }
