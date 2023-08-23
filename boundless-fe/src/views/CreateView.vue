@@ -233,13 +233,13 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
       </el-form-item>
       <el-form-item label="定价" prop="price">
         <el-input type="number" v-model="uriForm.price" placeholder="nft的定价">
-          <template #append>ETH</template>
+          <template #append>CEOL</template>
         </el-input>
       </el-form-item>
       <el-form-item>
         <div class="w-full flex justify-center">
           <el-button type="primary" @click="onSubmitUri(uriFormRef)"
-            >{{ currentRoute.query.id ? '挂卖' : '创建' }}CEOL</el-button
+            >{{ currentRoute.query.id ? '挂卖' : '创建' }}NFT</el-button
           >
           <el-button>清空</el-button>
         </div>

@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
-import { useWeb3Api, changeChain } from '@/utils'
+import { useWeb3Api, changeChain, openInMetamask } from '@/utils'
 import { ElMessage } from 'element-plus'
 import Vue3Jazzicon from '@/components/jazzicon/vue3-jazzicon.vue'
 const { provider, ethereum } = await useWeb3Api()
@@ -39,6 +39,7 @@ const usersStore = useUsersStore()
 const { userInfo, networkInfo } = storeToRefs(usersStore)
 const { getUserInfo } = usersStore
 const activeIndex = ref('/')
+const jumpUrl = ref(openInMetamask())
 const router = useRouter()
 const currentRoute = router.currentRoute
 const onLogin = () => {
@@ -81,6 +82,10 @@ watch(
 )
 const downloadMetamask = () => {
   window.open('https://metamask.io/download/', '_blank')
+}
+const onJump = () => {
+  if (!jumpUrl.value) return
+  window.open(jumpUrl.value, '_blank')
 }
 </script>
 <template>
@@ -128,6 +133,7 @@ const downloadMetamask = () => {
             >
               登录
             </el-button>
+            <el-button v-else-if="jumpUrl" @click="onJump">MetaMask</el-button>
             <el-button v-else type="primary" size="small" @click="downloadMetamask" round>
               下载钱包
             </el-button>
