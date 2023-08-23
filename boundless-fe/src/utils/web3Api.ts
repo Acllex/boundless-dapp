@@ -39,39 +39,26 @@ export async function changeChain() {
   if (!ethereum) return
   // 切换链节点
   try {
+    // 添加链节点
     await ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0x' + 'aef3' }]
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: '0x' + 'aef3',
+          chainName: 'Alfajores Testnet',
+          nativeCurrency: {
+            name: 'A-CELO',
+            symbol: 'A-CELO',
+            decimals: 18
+          },
+          rpcUrls: ['https://alfajores-forno.celo-testnet.org'],
+          blockExplorerUrls: ['https://explorer.celo.org/alfajores']
+        }
+      ]
     })
     return '切换成功！'
   } catch (error: any) {
-    if (error.code === 4902) {
-      try {
-        // 添加链节点
-        await ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: '0x' + 'aef3',
-              chainName: 'Alfajores Testnet',
-              nativeCurrency: {
-                name: 'A-CELO',
-                symbol: 'A-CELO',
-                decimals: 18
-              },
-              rpcUrls: ['https://alfajores-forno.celo-testnet.org'],
-              blockExplorerUrls: ['https://explorer.celo.org/alfajores']
-            }
-          ]
-        })
-        return '添加成功！'
-      } catch (error: any) {
-        console.log(error, 'error')
-        return error.message
-      }
-    } else {
-      console.log(error, 'error')
-      return error.message
-    }
+    console.log(error, 'error')
+    return error.message
   }
 }
