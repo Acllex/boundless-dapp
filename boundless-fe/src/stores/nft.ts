@@ -3,6 +3,8 @@ import { defineStore, storeToRefs } from 'pinia'
 import { useUsersStore } from './users'
 import { useWeb3Api } from '@/utils'
 import { ethers } from 'ethers'
+import { ElMessage } from 'element-plus'
+
 type Combat = {
   attack: string
   defense: string
@@ -131,6 +133,7 @@ export const useNftStore = defineStore('nft', () => {
         })
     } catch (error) {
       console.log(error, 'error')
+      ElMessage.error('购买失败,请检查余额是否充足')
     }
   }
   // 挂卖nft
