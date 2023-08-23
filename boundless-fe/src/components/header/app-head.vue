@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
-import { useWeb3Api } from '@/utils'
+import { useWeb3Api, changeChain } from '@/utils'
 import { ElMessage } from 'element-plus'
 import Vue3Jazzicon from '@/components/jazzicon/vue3-jazzicon.vue'
 const { provider, ethereum } = await useWeb3Api()
@@ -62,6 +62,9 @@ onMounted(async () => {
 
   // 监听网络变化
   const { chainId } = await provider.getNetwork()
+  if (Number(chainId) !== 44787) {
+    changeChain()
+  }
   networkInfo.value = { isLoading: false, name: NETWORKS[Number(chainId)] }
   ethereum.on('chainChanged', onNetworkChange)
 })

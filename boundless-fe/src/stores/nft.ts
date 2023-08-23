@@ -29,6 +29,8 @@ export const useNftStore = defineStore('nft', () => {
   const nftList = ref([] as NftItem[])
   // nft个人列表
   const nftMyList = ref([] as NftItem[])
+  // 提醒信息
+  const nftMessage = ref('')
 
   watch(
     () => userInfo.value.accounts,
@@ -49,19 +51,24 @@ export const useNftStore = defineStore('nft', () => {
     nftLoading.value = true
     // const name = await contract.name()
     // const symbol = await contract.symbol()
-    const nftLists = await contract.getAllNftsOnSale()
+    try {
+      const nftLists = await contract.getAllNftsOnSale()
 
-    for (let i = 0; i < nftLists.length; i++) {
-      const nft = nftLists[i]
-      const uri = await contract.tokenURI(nft.tokenId.toString())
-      const owner = await contract.ownerOf(nft.tokenId.toString())
-      const nftJson = await (await fetch(uri)).json()
-      nftList.value.push({
-        tokenId: nft.tokenId.toString(),
-        owner,
-        price: ethers.formatEther(nft.price.toString()),
-        ...nftJson
-      })
+      for (let i = 0; i < nftLists.length; i++) {
+        const nft = nftLists[i]
+        const uri = await contract.tokenURI(nft.tokenId.toString())
+        const owner = await contract.ownerOf(nft.tokenId.toString())
+        const nftJson = await (await fetch(uri)).json()
+        nftList.value.push({
+          tokenId: nft.tokenId.toString(),
+          owner,
+          price: ethers.formatEther(nft.price.toString()),
+          ...nftJson
+        })
+      }
+    } catch (error) {
+      console.log(error, 'error')
+      nftMessage.value = '当前区块链没有Boundless NFT合约,请切换区块链'
     }
 
     // nftInfo.value = { name, symbol }
@@ -89,6 +96,7 @@ export const useNftStore = defineStore('nft', () => {
       }
     } catch (error) {
       console.log(error, 'error')
+      nftMessage.value = '当前区块链没有Boundless NFT合约,请切换区块链'
     }
     nftLoading.value = false
   }
@@ -163,7 +171,7 @@ export const useNftStore = defineStore('nft', () => {
   }
   return {
     nftLoading,
-    // nftInfo,
+    nftMessage,
     nftList,
     nftMyList,
     getNftList,

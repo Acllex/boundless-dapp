@@ -33,3 +33,41 @@ export async function useWeb3Api() {
     contract: signedContract as unknown as NftMarketContract
   }
 }
+// 切换链节点
+export async function changeChain() {
+  const { ethereum } = await useWeb3Api()
+  if (!ethereum) return
+  // 切换链节点
+  try {
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x' + 'aef3' }]
+    })
+  } catch (error: any) {
+    if (error.code === 4902) {
+      try {
+        // 添加链节点
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x' + 'aef3',
+              chainName: 'Alfajores Testnet',
+              nativeCurrency: {
+                name: 'A-CELO',
+                symbol: 'A-CELO',
+                decimals: 18
+              },
+              rpcUrls: ['https://alfajores-forno.celo-testnet.org'],
+              blockExplorerUrls: ['https://explorer.celo.org/alfajores']
+            }
+          ]
+        })
+      } catch (error) {
+        console.log(error, 'error')
+      }
+    } else {
+      console.log(error, 'error')
+    }
+  }
+}

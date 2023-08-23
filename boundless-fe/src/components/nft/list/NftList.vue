@@ -1,15 +1,25 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import NftItem from '@/components/nft/item/NftItem.vue'
 import { useNftStore } from '@/stores/nft'
+import { useUsersStore } from '@/stores/users'
+import { changeChain } from '@/utils'
 const nftStore = useNftStore()
-const { nftList, nftLoading } = storeToRefs(nftStore)
+const usersStore = useUsersStore()
+const { nftList, nftLoading, nftMessage } = storeToRefs(nftStore)
+const { networkInfo } = storeToRefs(usersStore)
 const { getNftList } = nftStore
-onMounted(() => {
-  getNftList()
-})
+watch(
+  networkInfo,
+  () => {
+    getNftList()
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <template>
@@ -21,5 +31,8 @@ onMounted(() => {
   <div v-else-if="nftLoading" class="grid sm:grid-cols-2 gap-4 lg:grid-cols-4">
     <SkeletonCard v-for="i in 8" :key="i" />
   </div>
-  <el-empty v-else-if="!nftLoading && !nftList.length" description="您还没有NFT收藏" />
+  <el-empty v-else-if="nftMessage" :description="nftMessage">
+    <el-button type="primary" @click="changeChain">切换网络</el-button>
+  </el-empty>
+  <el-empty v-else-if="!nftLoading && !nftList.length" description="当前没有在售NFT" />
 </template>

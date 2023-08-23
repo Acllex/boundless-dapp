@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, onUpdated } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import NftCard from '../item/nft-card.vue'
 import { storeToRefs } from 'pinia'
 import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import { useNftStore } from '@/stores/nft'
+import { useUsersStore } from '@/stores/users'
 import SelectCard from '@/components/selectCard/select-card.vue'
 type ItemInfo = {
   tokenId: string
@@ -21,7 +22,9 @@ type ItemInfo = {
 }
 const router = useRouter()
 const nftStore = useNftStore()
+const usersStore = useUsersStore()
 const { nftMyList, nftLoading } = storeToRefs(nftStore)
+const { networkInfo } = storeToRefs(usersStore)
 const { getNftMyList, cancelNftOnSale } = nftStore
 const itemInfo = ref({
   tokenId: '',
@@ -32,13 +35,13 @@ const itemInfo = ref({
   description: ''
 } as ItemInfo)
 const isPreview = ref(false)
-
+watch(networkInfo, () => {
+  getNftMyList()
+})
 onMounted(() => {
   getNftMyList()
 })
-onUpdated(() => {
-  itemInfo.value = nftMyList.value[0]
-})
+
 const getCardInfo = (info: ItemInfo) => {
   itemInfo.value = info
   isPreview.value = true
@@ -59,18 +62,20 @@ const cancelNft = () => {
   <div class="grid sm:grid-cols-3 grid-cols-2">
     <div class="col-span-2">
       <h2>我的NFT收藏</h2>
+      <div v-if="nftLoading" class="grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-3 gap-4 mt-8">
+        <SkeletonCard v-for="i in 18" :key="i" />
+      </div>
       <div
-        v-if="nftMyList.length"
+        v-else-if="nftMyList.length"
         class="grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-3 gap-4 mt-8"
       >
-        <NftCard @click-card="getCardInfo" v-for="(o, i) in nftMyList" :key="i" :item-info="o" />
-      </div>
-      <div v-else-if="nftLoading" class="grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-3 gap-4 mt-8">
-        <SkeletonCard v-for="i in 18" :key="i" />
+        <div v-for="o in nftMyList" :key="o.tokenId">
+          <NftCard :item-info="o" @click-card="getCardInfo" />
+        </div>
       </div>
       <el-empty v-else-if="!nftLoading && !nftMyList.length" description="您还没有NFT收藏" />
     </div>
-    <div v-if="itemInfo" class="lg:px-6 sm:block hidden">
+    <div v-if="itemInfo?.tokenId" class="lg:px-6 sm:block hidden">
       <el-card shadow="hover" :body-style="{ padding: '0px' }">
         <SelectCard :item-info="itemInfo" />
         <div class="p-3 flex justify-center">

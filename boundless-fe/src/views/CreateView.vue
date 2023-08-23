@@ -239,7 +239,7 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
       <el-form-item>
         <div class="w-full flex justify-center">
           <el-button type="primary" @click="onSubmitUri(uriFormRef)"
-            >{{ currentRoute.query.id ? '挂卖' : '创建' }}NFT</el-button
+            >{{ currentRoute.query.id ? '挂卖' : '创建' }}CEOL</el-button
           >
           <el-button>清空</el-button>
         </div>
