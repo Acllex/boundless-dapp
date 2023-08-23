@@ -49,8 +49,8 @@ export const useNftStore = defineStore('nft', () => {
     if (!contract) return
     nftList.value = []
     nftLoading.value = true
-    const name = await contract.name()
-    const symbol = await contract.symbol()
+    // const name = await contract.name()
+    // const symbol = await contract.symbol()
     try {
       const nftLists = await contract.getAllNftsOnSale()
       const nfts = [] as NftItem[]
