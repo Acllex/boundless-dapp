@@ -62,14 +62,3 @@ export async function changeChain() {
     return error.message
   }
 }
-// 移动端登录
-export function openInMetamask() {
-  const flag = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  )
-  if (!flag) return
-  if (!window.ethereum) {
-    return 'https://metamask.app.link/dapp/boundless-dapp.vercel.app/'
-  }
-  return
-}

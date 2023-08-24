@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import NftItem from '@/components/nft/item/NftItem.vue'
@@ -11,6 +11,9 @@ const usersStore = useUsersStore()
 const { nftList, nftLoading, nftMessage } = storeToRefs(nftStore)
 const { networkInfo } = storeToRefs(usersStore)
 const { getNftList } = nftStore
+onMounted(() => {
+  getNftList()
+})
 watch(
   networkInfo,
   () => {

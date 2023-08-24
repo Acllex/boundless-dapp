@@ -1,30 +1,23 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useWeb3Api } from '@/utils'
-const { provider, ethereum } = await useWeb3Api()
+import { getAccount, getNetwork } from '@wagmi/core'
 
 export const useUsersStore = defineStore(
   'users',
   () => {
-    const userInfo = ref({
-      accounts: '',
-      isLoading: false
-    })
-    const networkInfo = ref({
-      name: '',
-      isLoading: false
-    })
+    const userInfo = ref()
+    const networkInfo = ref()
 
     // 获取用户信息
-    async function getUserInfo() {
-      if (!provider || !ethereum) return
-      userInfo.value = { isLoading: true, accounts: '' }
-      const signer = await provider.getSigner()
-      const accounts = await signer.getAddress()
-      userInfo.value = { accounts, isLoading: false }
+    function getUserInfo() {
+      const account = getAccount()
+      userInfo.value = { accounts: account.address }
     }
-
-    return { userInfo, getUserInfo, networkInfo }
+    function getNetworkInfo() {
+      const network = getNetwork()
+      networkInfo.value = { network: network.chains[0].name }
+    }
+    return { userInfo, networkInfo, getUserInfo, getNetworkInfo }
   },
   {
     persist: true

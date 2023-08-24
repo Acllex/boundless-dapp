@@ -24,10 +24,10 @@ const router = useRouter()
 const currentRoute = router.currentRoute
 
 onMounted(async () => {
-  if (!userInfo.value.accounts) {
-    ElMessage.error('请先登录')
-    router.push('/login')
-  }
+  // if (!userInfo.value.accounts) {
+  //   ElMessage.error('请先登录')
+  //   router.push('/login')
+  // }
   if (currentRoute.value.query?.id) {
     isSwitch.value = true
     uriForm.tokenURI = (await getTokenURI(currentRoute.value.query.id as string)) as string
@@ -109,12 +109,12 @@ async function onSubmit(formEl: FormInstance | undefined) {
     }
   })
   if (!metadata) return
+
   uriForm.tokenURI = ipfsToHttps(metadata.url).slice(8)
   isLoading.value = false
   isSwitch.value = true
 }
 async function onSubmitUri(formEl: FormInstance | undefined) {
-  if (!userInfo.value.accounts) return
   if (!formEl) return
   const isSubmit = await formEl.validate((valid) => {
     if (valid) {

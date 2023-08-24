@@ -40,6 +40,7 @@ declare module 'vue' {
     SelectCard: typeof import('./src/components/selectCard/select-card.vue')['default']
     SkeletonCard: typeof import('./src/components/nft/skeletonCard/skeleton-card.vue')['default']
     Vue3Jazzicon: typeof import('./src/components/jazzicon/vue3-jazzicon.vue')['default']
+    Web3Btn: typeof import('./src/components/web3Btn/web3-btn.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

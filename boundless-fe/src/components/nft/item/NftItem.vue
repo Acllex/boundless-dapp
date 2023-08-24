@@ -55,7 +55,7 @@ const onPreview = () => {
         <div class="absolute bottom-2">
           <el-button
             type="primary"
-            :disabled="itemInfo.owner == userInfo.accounts"
+            :disabled="itemInfo.owner == userInfo?.accounts"
             @click="onBuy(itemInfo.tokenId, itemInfo.price)"
             :loading="buyLoading"
             >购买</el-button

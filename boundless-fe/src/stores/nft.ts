@@ -1,10 +1,17 @@
-import { ref, watch } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
-import { useUsersStore } from './users'
-import { useWeb3Api } from '@/utils'
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
 import { ethers } from 'ethers'
 import { ElMessage } from 'element-plus'
-
+import {
+  getAllNftsOnSale,
+  tokenURI,
+  getOwner,
+  getOwnedNfts,
+  mintToken,
+  buyMyNft,
+  placeMyNftOnSale,
+  cancelMyNftOnSale
+} from '@/server/web3api'
 type Combat = {
   attack: string
   defense: string
@@ -23,8 +30,6 @@ type NftItem = {
 }
 
 export const useNftStore = defineStore('nft', () => {
-  const usersStore = useUsersStore()
-  const { userInfo } = storeToRefs(usersStore)
   const nftLoading = ref(false)
   // const nftInfo = ref({ name: '', symbol: '' })
   // nft的销售列表
@@ -34,32 +39,17 @@ export const useNftStore = defineStore('nft', () => {
   // 提醒信息
   const nftMessage = ref('')
 
-  watch(
-    () => userInfo.value.accounts,
-    async (newVal) => {
-      if (newVal) {
-        await getNftMyList()
-      }
-    },
-    { deep: true }
-  )
-
   // 获取nft销售列表
   async function getNftList() {
-    const { contract } = await useWeb3Api()
-
-    if (!contract) return
     nftList.value = []
     nftLoading.value = true
-    // const name = await contract.name()
-    // const symbol = await contract.symbol()
     try {
-      const nftLists = await contract.getAllNftsOnSale()
+      const nftLists = await getAllNftsOnSale()
       const nfts = [] as NftItem[]
       for (let i = 0; i < nftLists.length; i++) {
         const nft = nftLists[i]
-        const uri = await contract.tokenURI(nft.tokenId.toString())
-        const owner = await contract.ownerOf(nft.tokenId.toString())
+        const uri = await tokenURI(nft.tokenId.toString())
+        const owner = await getOwner(nft.tokenId.toString())
         const nftJson = await (await fetch(uri)).json()
         nfts.push({
           tokenId: nft.tokenId.toString(),
@@ -78,16 +68,13 @@ export const useNftStore = defineStore('nft', () => {
   }
   // 获取nft个人列表
   async function getNftMyList() {
-    const { contract } = await useWeb3Api()
-
-    if (!contract) return
     nftLoading.value = true
     nftMyList.value = []
     try {
-      const nftLists = await contract.getOwnedNfts()
+      const nftLists = await getOwnedNfts()
       for (let i = 0; i < nftLists.length; i++) {
         const nft = nftLists[i]
-        const uri = await contract.tokenURI(nft.tokenId.toString())
+        const uri = await tokenURI(nft.tokenId.toString())
         const nftJson = await (await fetch(uri)).json()
         nftMyList.value.push({
           tokenId: nft.tokenId.toString(),
@@ -104,14 +91,8 @@ export const useNftStore = defineStore('nft', () => {
   }
   // 创造nft
   async function addNft(uri: string, price: string) {
-    const { contract, ethereum } = await useWeb3Api()
-
-    if (!contract || !ethereum) return
-    const wei = ethers.parseEther(price)
     try {
-      const res = await contract.mintToken(uri, wei, {
-        value: ethers.parseEther((0.025).toString())
-      })
+      const res = await mintToken(uri, price)
       return res
     } catch (error) {
       console.log(error, 'error')
@@ -119,54 +100,35 @@ export const useNftStore = defineStore('nft', () => {
   }
   // 购买nft
   async function buyNft(tokenId: string, price: string) {
-    const { contract } = await useWeb3Api()
-
-    if (!contract) return
-
     try {
-      await contract
-        .buyNft(tokenId, {
-          value: ethers.parseEther(price).toString()
-        })
-        .then(() => {
-          nftList.value = nftList.value.filter((nft) => nft.tokenId !== tokenId)
-        })
+      await buyMyNft(tokenId, price).then(() => {
+        nftList.value = nftList.value.filter((nft) => nft.tokenId !== tokenId)
+      })
     } catch (error) {
       console.log(error, 'error')
-      ElMessage.error('购买失败,请检查余额是否充足')
+      ElMessage.error('购买失败')
     }
   }
   // 挂卖nft
   async function placeNftOnSale(tokenId: string, price: string) {
-    const { contract } = await useWeb3Api()
-
-    if (!contract) return
     try {
-      await contract.placeNftOnSale(tokenId, ethers.parseEther(price).toString(), {
-        value: ethers.parseEther((0.025).toString())
-      })
+      await placeMyNftOnSale(tokenId, price)
     } catch (error) {
       console.log(error, 'error')
     }
   }
   // 取消挂卖nft
   async function cancelNftOnSale(tokenId: string) {
-    const { contract } = await useWeb3Api()
-
-    if (!contract) return
     try {
-      await contract.cancelNftOnSale(tokenId)
+      await cancelMyNftOnSale(tokenId)
     } catch (error) {
       console.log(error, 'error')
     }
   }
   // 获取TokenURI
   async function getTokenURI(tokenId: string) {
-    const { contract } = await useWeb3Api()
-
-    if (!contract) return
     try {
-      const uri = await contract.tokenURI(tokenId)
+      const uri = await tokenURI(tokenId)
       return uri
     } catch (error) {
       console.log(error, 'error')

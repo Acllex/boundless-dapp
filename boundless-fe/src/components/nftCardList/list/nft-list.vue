@@ -7,6 +7,7 @@ import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import { useNftStore } from '@/stores/nft'
 import { useUsersStore } from '@/stores/users'
 import SelectCard from '@/components/selectCard/select-card.vue'
+import { el } from 'element-plus/lib/locale/index.js'
 type ItemInfo = {
   tokenId: string
   image: string
@@ -24,7 +25,7 @@ const router = useRouter()
 const nftStore = useNftStore()
 const usersStore = useUsersStore()
 const { nftMyList, nftLoading } = storeToRefs(nftStore)
-const { networkInfo } = storeToRefs(usersStore)
+const { userInfo } = storeToRefs(usersStore)
 const { getNftMyList, cancelNftOnSale } = nftStore
 const itemInfo = ref({
   tokenId: '',
@@ -35,8 +36,14 @@ const itemInfo = ref({
   description: ''
 } as ItemInfo)
 const isPreview = ref(false)
-watch(networkInfo, () => {
-  getNftMyList()
+watch(userInfo, (val) => {
+  console.log(val)
+
+  if (val?.accounts) {
+    getNftMyList()
+  } else {
+    nftMyList.value = []
+  }
 })
 onMounted(() => {
   getNftMyList()
