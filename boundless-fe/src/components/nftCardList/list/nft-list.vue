@@ -7,7 +7,6 @@ import SkeletonCard from '../skeletonCard/skeleton-card.vue'
 import { useNftStore } from '@/stores/nft'
 import { useUsersStore } from '@/stores/users'
 import SelectCard from '@/components/selectCard/select-card.vue'
-import { el } from 'element-plus/lib/locale/index.js'
 type ItemInfo = {
   tokenId: string
   image: string
@@ -37,8 +36,6 @@ const itemInfo = ref({
 } as ItemInfo)
 const isPreview = ref(false)
 watch(userInfo, (val) => {
-  console.log(val)
-
   if (val?.accounts) {
     getNftMyList()
   } else {

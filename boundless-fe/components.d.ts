@@ -23,7 +23,6 @@ declare module 'vue' {
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -40,7 +39,6 @@ declare module 'vue' {
     SelectCard: typeof import('./src/components/selectCard/select-card.vue')['default']
     SkeletonCard: typeof import('./src/components/nft/skeletonCard/skeleton-card.vue')['default']
     Vue3Jazzicon: typeof import('./src/components/jazzicon/vue3-jazzicon.vue')['default']
-    Web3Btn: typeof import('./src/components/web3Btn/web3-btn.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
