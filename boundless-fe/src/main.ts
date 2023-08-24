@@ -18,15 +18,19 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 const chains = [celoAlfajores]
-const projectId = '83befcd71a27d66b05c40075484ff01d'
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+const { publicClient } = configureChains(chains, [
+  w3mProvider({ projectId: import.meta.env.VITE_PROJECT_ID })
+])
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  connectors: w3mConnectors({ projectId: import.meta.env.VITE_PROJECT_ID, chains }),
   publicClient
 })
 const ethereumClient = new EthereumClient(wagmiConfig, chains)
-const web3modal = new Web3Modal({ projectId, defaultChain: celoAlfajores }, ethereumClient)
+const web3modal = new Web3Modal(
+  { projectId: import.meta.env.VITE_PROJECT_ID, defaultChain: celoAlfajores },
+  ethereumClient
+)
 app.config.globalProperties.$web3modal = web3modal
 app.mount('#app')
