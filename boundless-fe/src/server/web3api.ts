@@ -46,13 +46,15 @@ export async function getOwner(tokenId: string) {
   })
   return data as string
 }
-export async function getOwnedNfts() {
-  const res = await getWalletClient()
+export async function getOwnedNfts(address: `0x${string}`) {
   const data = await readContract({
     address: networks[keys[0]]['address'] as `0x${string}`,
     abi: abi,
     functionName: 'getOwnedNfts',
-    account: res?.account
+    account: {
+      address: address,
+      type: 'json-rpc'
+    }
   })
   return data as { [key: string]: any }[]
 }
@@ -101,15 +103,4 @@ export async function cancelMyNftOnSale(tokenId: string) {
   })
   const { hash } = await writeContract(request)
   return hash
-}
-export async function WriteMyContract(functionName: string) {
-  const { request } = await prepareWriteContract({
-    address: networks[keys[0]]['address'] as `0x${string}`,
-    abi: [...abi] as const,
-    functionName: functionName,
-    args: ['https://bai.com', parseEther((0.1).toString())],
-    value: parseEther('0.025')
-  })
-  //   const { hash } = await writeContract(request)
-  return request
 }

@@ -23,6 +23,7 @@ declare module 'vue' {
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']

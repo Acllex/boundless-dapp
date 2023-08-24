@@ -35,16 +35,22 @@ const itemInfo = ref({
   description: ''
 } as ItemInfo)
 const isPreview = ref(false)
-watch(userInfo, (val) => {
-  if (val?.accounts) {
-    getNftMyList()
-  } else {
-    nftMyList.value = []
+watch(
+  userInfo,
+  (val) => {
+    if (val?.accounts) {
+      getNftMyList(val?.accounts)
+    } else {
+      nftMyList.value = []
+    }
+  },
+  {
+    immediate: true
   }
-})
-onMounted(() => {
-  getNftMyList()
-})
+)
+// onMounted(() => {
+//   getNftMyList()
+// })
 
 const getCardInfo = (info: ItemInfo) => {
   itemInfo.value = info

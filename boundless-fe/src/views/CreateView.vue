@@ -137,9 +137,13 @@ async function onSubmitUri(formEl: FormInstance | undefined) {
     return
   }
   if (currentRoute.value.query?.id) {
-    await placeNftOnSale(currentRoute.value.query.id as string, uriForm.price)
+    const res = await placeNftOnSale(currentRoute.value.query.id as string, uriForm.price)
     isLoading.value = false
-    ElMessage.success('挂卖成功')
+    if (res) {
+      ElMessage.success('挂卖成功')
+    } else {
+      ElMessage.error('挂卖失败')
+    }
   } else {
     const res = await addNft(`https://${uriForm.tokenURI}`, uriForm.price)
     if (res) {

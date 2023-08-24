@@ -67,11 +67,11 @@ export const useNftStore = defineStore('nft', () => {
     nftLoading.value = false
   }
   // 获取nft个人列表
-  async function getNftMyList() {
+  async function getNftMyList(address: `0x${string}`) {
     nftLoading.value = true
     nftMyList.value = []
     try {
-      const nftLists = await getOwnedNfts()
+      const nftLists = await getOwnedNfts(address)
       for (let i = 0; i < nftLists.length; i++) {
         const nft = nftLists[i]
         const uri = await tokenURI(nft.tokenId.toString())
@@ -112,7 +112,8 @@ export const useNftStore = defineStore('nft', () => {
   // 挂卖nft
   async function placeNftOnSale(tokenId: string, price: string) {
     try {
-      await placeMyNftOnSale(tokenId, price)
+      const res = await placeMyNftOnSale(tokenId, price)
+      return res
     } catch (error) {
       console.log(error, 'error')
     }

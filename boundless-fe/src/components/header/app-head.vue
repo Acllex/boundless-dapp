@@ -3,19 +3,16 @@ import { useRouter } from 'vue-router'
 import { ref, watch, getCurrentInstance } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
-import Vue3Jazzicon from '@/components/jazzicon/vue3-jazzicon.vue'
-import { getAccount, getNetwork } from '@wagmi/core'
+import { getAccount } from '@wagmi/core'
 
 const { $web3modal } = getCurrentInstance()!.appContext.config.globalProperties
 const usersStore = useUsersStore()
 const { userInfo } = storeToRefs(usersStore)
 const { getUserInfo, getNetworkInfo } = usersStore
 const activeIndex = ref('/')
-const visible = ref(false)
 const router = useRouter()
 const currentRoute = router.currentRoute
 const onLogin = () => {
-  visible.value = false
   $web3modal.openModal()
 }
 $web3modal.subscribeModal((newState: { open: boolean }) => {
@@ -42,15 +39,9 @@ watch(
         <div class="flex-1"></div>
         <el-menu-item>
           <div class="h-full box-border">
-            <el-popover placement="bottom-end" :visible="visible" trigger="click">
+            <el-popover placement="bottom-end" trigger="click">
               <template #reference>
-                <el-avatar class="mb-1.5 relative" @click="visible = !visible">
-                  <Vue3Jazzicon
-                    class="absolute bottom-0"
-                    :diameter="40"
-                    :address="userInfo?.accounts || ''"
-                  />
-                </el-avatar>
+                <el-button color="#626aef">个人中心</el-button>
               </template>
               <div>
                 <div
@@ -68,7 +59,6 @@ watch(
                   @click="
                     () => {
                       router.push('/my-nfts')
-                      visible = !visible
                     }
                   "
                 >
