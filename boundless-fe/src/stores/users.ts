@@ -9,6 +9,7 @@ export const useUsersStore = defineStore('users', () => {
   // 获取用户信息
   function getUserInfo() {
     const account = getAccount()
+    if (account.address && userInfo.value?.accounts) return
     userInfo.value = { accounts: account.address }
   }
   function getNetworkInfo() {

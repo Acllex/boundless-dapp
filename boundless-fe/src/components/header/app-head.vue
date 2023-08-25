@@ -1,26 +1,25 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { ref, watch, getCurrentInstance } from 'vue'
+import { ref, watch, getCurrentInstance, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
-import { getAccount } from '@wagmi/core'
 
 const { $web3modal } = getCurrentInstance()!.appContext.config.globalProperties
 const usersStore = useUsersStore()
 const { userInfo } = storeToRefs(usersStore)
-const { getUserInfo, getNetworkInfo } = usersStore
+const { getUserInfo } = usersStore
 const activeIndex = ref('/')
 const router = useRouter()
 const currentRoute = router.currentRoute
+onMounted(() => {
+  getUserInfo()
+})
 const onLogin = () => {
   $web3modal.openModal()
 }
 $web3modal.subscribeModal((newState: { open: boolean }) => {
   if (!newState.open) {
-    const account = getAccount()
-    if (account.address && userInfo.value?.accounts) return
     getUserInfo()
-    getNetworkInfo()
   }
 })
 watch(
