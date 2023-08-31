@@ -3,6 +3,8 @@ import { useRouter } from 'vue-router'
 import { ref, watch, getCurrentInstance, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
+import { watchNetwork, switchNetwork } from '@wagmi/core'
+import { ElMessage } from 'element-plus'
 
 const { $web3modal } = getCurrentInstance()!.appContext.config.globalProperties
 const usersStore = useUsersStore()
@@ -11,6 +13,14 @@ const { getUserInfo } = usersStore
 const activeIndex = ref('/')
 const router = useRouter()
 const currentRoute = router.currentRoute
+watchNetwork(async (network) => {
+  if (network.chain && network?.chain.id !== 44787) {
+    ElMessage.error('请切换网络到Alfajores Testnet')
+    await switchNetwork({
+      chainId: 44787
+    })
+  }
+})
 onMounted(() => {
   getUserInfo()
 })
