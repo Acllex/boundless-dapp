@@ -104,9 +104,9 @@ export const useNftStore = defineStore('nft', () => {
       await buyMyNft(tokenId, price).then(() => {
         nftList.value = nftList.value.filter((nft) => nft.tokenId !== tokenId)
       })
-    } catch (error) {
+    } catch (error: any) {
       console.log(error, 'error')
-      ElMessage.error('购买失败')
+      ElMessage.error(error.name)
     }
   }
   // 挂卖nft

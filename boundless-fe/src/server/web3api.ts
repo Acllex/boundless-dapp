@@ -63,6 +63,7 @@ export async function mintToken(uri: string, price: string) {
     address: networks[keys[0]]['address'] as `0x${string}`,
     abi: abi,
     functionName: 'mintToken',
+    chainId: 44787,
     args: [uri, parseEther(price)],
     value: parseEther('0.025')
   })
@@ -75,6 +76,7 @@ export async function buyMyNft(tokenId: string, price: string) {
     address: networks[keys[0]]['address'] as `0x${string}`,
     abi: abi,
     functionName: 'buyNft',
+    chainId: 44787,
     args: [tokenId],
     value: parseEther(price)
   })
@@ -87,6 +89,7 @@ export async function placeMyNftOnSale(tokenId: string, price: string) {
     address: networks[keys[0]]['address'] as `0x${string}`,
     abi: abi,
     functionName: 'placeNftOnSale',
+    chainId: 44787,
     args: [tokenId, parseEther(price)],
     value: parseEther('0.025')
   })
@@ -99,6 +102,7 @@ export async function cancelMyNftOnSale(tokenId: string) {
     address: networks[keys[0]]['address'] as `0x${string}`,
     abi: abi,
     functionName: 'cancelNftOnSale',
+    chainId: 44787,
     args: [tokenId]
   })
   const { hash } = await writeContract(request)
